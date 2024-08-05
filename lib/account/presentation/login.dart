@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:the_pushapp/supabase_provider.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:supabase_flutter/supabase_flutter.dart";
+import "package:the_pushapp/supabase_provider.dart";
 
 class LoginDisplay extends ConsumerWidget {
   const LoginDisplay({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final supabase = ref.read(supabaseProvider).value!;
+    final supabase = ref.read(clientProviderAsync).value!;
     return _LoginForm(supabase.auth);
   }
 }
@@ -23,9 +23,15 @@ class _LoginForm extends StatelessWidget {
 
   Future<void> _login() async {
     if (_formKey.currentState?.validate() != true) return;
+
     final email = _emailController.text;
-    await _auth.signInWithOtp(
-        email: email, emailRedirectTo: "io.supabase.pushapp://login-callback/");
+    try {
+      await _auth.signInWithOtp(
+          email: email,
+          emailRedirectTo: "io.supabase.pushapp://login-callback/");
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   @override
@@ -39,7 +45,7 @@ class _LoginForm extends StatelessWidget {
             controller: _emailController,
             validator: (value) {
               if (value?.isEmpty == true) {
-                return 'Please enter your email';
+                return "Please enter your email";
               }
               return null;
             },
@@ -47,7 +53,7 @@ class _LoginForm extends StatelessWidget {
           const SizedBox(height: 10),
           TextButton(
             onPressed: _login,
-            child: const Text('Login'),
+            child: const Text("Login"),
           ),
         ],
       ),
