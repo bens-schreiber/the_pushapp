@@ -4,6 +4,8 @@ import "package:the_pushapp/account/domain/account.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
 /// Whether the user is authenticated to supabase.
+///
+/// Listens to auth changes from [clientAuthStreamProvider].
 final isAuthenticatedProviderAsync = FutureProvider<bool>((ref) async {
   final clientFuture = ref.watch(clientProviderAsync);
   final authStream = ref.watch(clientAuthStreamProvider);
@@ -17,13 +19,17 @@ final isAuthenticatedProviderAsync = FutureProvider<bool>((ref) async {
 });
 
 /// Whether the user is authenticated to supabase.
-/// Yields from [isAuthenticatedProviderAsync].
+///
+/// Synchronously read [isAuthenticatedProviderAsync].
 final isAuthenticatedProvider = Provider<bool>((ref) {
   return ref.watch(isAuthenticatedProviderAsync).value == true;
 });
 
 /// The authenticated in users Account DTO.
-/// Needs to be manually invalidated when an account is created or updated.
+///
+/// Listens to [isAuthenticatedProviderAsync].
+///
+/// Needs to be manually invalidated when an account is modified.
 final accountProviderAsync = FutureProvider<Account?>((ref) async {
   final isLoggedIn = ref.watch(isAuthenticatedProviderAsync);
   if (isLoggedIn.value != true) return null;
@@ -39,7 +45,8 @@ final accountProviderAsync = FutureProvider<Account?>((ref) async {
 });
 
 /// The authenticated in users Account DTO.
-/// Yields from [accountProviderAsync].
+///
+/// Synchronously read [accountProviderAsync].
 final accountProvider = Provider<Account?>((ref) {
   return ref.watch(accountProviderAsync).value;
 });

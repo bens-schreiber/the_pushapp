@@ -7,6 +7,11 @@ import "package:supabase_flutter/supabase_flutter.dart";
 // ignore: unused_element
 late StreamSubscription _authSubscription;
 
+/// Initializes the supabase client
+///
+/// Initializes auth state change listener to persist the session in shared preferences.
+///
+/// Should be populated before the app is started.
 final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   final supabase = await Supabase.initialize(
     url: "https://tywqkhiiksnnvtdswlbc.supabase.co",
@@ -36,7 +41,9 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   return client;
 });
 
-/// Yields from [clientProviderAsync].
+/// Synchronously read [clientProviderAsync]
+///
+/// Throws an error if the client is not yet loaded.
 final clientProvider = Provider<SupabaseClient>(
     (ref) => ref.watch(clientProviderAsync).requireValue);
 

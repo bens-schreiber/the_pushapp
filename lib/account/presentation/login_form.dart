@@ -3,23 +3,28 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
-class LoginDisplay extends ConsumerWidget {
-  const LoginDisplay({super.key});
+class LoginForm extends ConsumerWidget {
+  const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final supabase = ref.read(clientProviderAsync).value!;
+    final supabase = ref.read(clientProvider);
     return _LoginForm(supabase.auth);
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
   final GoTrueClient auth;
-  _LoginForm(this.auth);
+  const _LoginForm(this.auth);
 
+  @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  GoTrueClient get _auth => auth;
+  GoTrueClient get _auth => widget.auth;
 
   Future<void> _login() async {
     if (_formKey.currentState?.validate() != true) return;
