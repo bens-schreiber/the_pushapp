@@ -34,7 +34,7 @@
                 android:scheme="io.supabase.pushapp"
                 android:host="login-callback" />
                 <data
-                android:scheme="com.bmin-schreib.thepushapp"
+                android:scheme="com.bminschreib.thePushApp"
                 android:host="invite" />
             </intent-filter>
         </activity>

@@ -12,6 +12,7 @@ class Account with _$Account {
     required String firstName,
     required String lastName,
     required DateTime createdAt,
+    String? fcm,
     String? groupId,
   }) = _Account;
 

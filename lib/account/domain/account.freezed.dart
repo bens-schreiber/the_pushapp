@@ -24,6 +24,7 @@ mixin _$Account {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String? get fcm => throw _privateConstructorUsedError;
   String? get groupId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $AccountCopyWith<$Res> {
       String firstName,
       String lastName,
       DateTime createdAt,
+      String? fcm,
       String? groupId});
 }
 
@@ -61,6 +63,7 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
     Object? firstName = null,
     Object? lastName = null,
     Object? createdAt = null,
+    Object? fcm = freezed,
     Object? groupId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -80,6 +83,10 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      fcm: freezed == fcm
+          ? _value.fcm
+          : fcm // ignore: cast_nullable_to_non_nullable
+              as String?,
       groupId: freezed == groupId
           ? _value.groupId
           : groupId // ignore: cast_nullable_to_non_nullable
@@ -100,6 +107,7 @@ abstract class _$$AccountImplCopyWith<$Res> implements $AccountCopyWith<$Res> {
       String firstName,
       String lastName,
       DateTime createdAt,
+      String? fcm,
       String? groupId});
 }
 
@@ -118,6 +126,7 @@ class __$$AccountImplCopyWithImpl<$Res>
     Object? firstName = null,
     Object? lastName = null,
     Object? createdAt = null,
+    Object? fcm = freezed,
     Object? groupId = freezed,
   }) {
     return _then(_$AccountImpl(
@@ -137,6 +146,10 @@ class __$$AccountImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      fcm: freezed == fcm
+          ? _value.fcm
+          : fcm // ignore: cast_nullable_to_non_nullable
+              as String?,
       groupId: freezed == groupId
           ? _value.groupId
           : groupId // ignore: cast_nullable_to_non_nullable
@@ -154,6 +167,7 @@ class _$AccountImpl implements _Account {
       required this.firstName,
       required this.lastName,
       required this.createdAt,
+      this.fcm,
       this.groupId});
 
   factory _$AccountImpl.fromJson(Map<String, dynamic> json) =>
@@ -168,11 +182,13 @@ class _$AccountImpl implements _Account {
   @override
   final DateTime createdAt;
   @override
+  final String? fcm;
+  @override
   final String? groupId;
 
   @override
   String toString() {
-    return 'Account(id: $id, firstName: $firstName, lastName: $lastName, createdAt: $createdAt, groupId: $groupId)';
+    return 'Account(id: $id, firstName: $firstName, lastName: $lastName, createdAt: $createdAt, fcm: $fcm, groupId: $groupId)';
   }
 
   @override
@@ -187,13 +203,14 @@ class _$AccountImpl implements _Account {
                 other.lastName == lastName) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.fcm, fcm) || other.fcm == fcm) &&
             (identical(other.groupId, groupId) || other.groupId == groupId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, firstName, lastName, createdAt, groupId);
+  int get hashCode => Object.hash(
+      runtimeType, id, firstName, lastName, createdAt, fcm, groupId);
 
   @JsonKey(ignore: true)
   @override
@@ -215,6 +232,7 @@ abstract class _Account implements Account {
       required final String firstName,
       required final String lastName,
       required final DateTime createdAt,
+      final String? fcm,
       final String? groupId}) = _$AccountImpl;
 
   factory _Account.fromJson(Map<String, dynamic> json) = _$AccountImpl.fromJson;
@@ -227,6 +245,8 @@ abstract class _Account implements Account {
   String get lastName;
   @override
   DateTime get createdAt;
+  @override
+  String? get fcm;
   @override
   String? get groupId;
   @override

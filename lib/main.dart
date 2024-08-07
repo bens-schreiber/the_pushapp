@@ -6,25 +6,40 @@ import "package:the_pushapp/account/data/channel.dart";
 import "package:the_pushapp/account/data/deep_link.dart";
 import "package:the_pushapp/group/data/channel.dart";
 import "package:the_pushapp/home/presentation/home.dart";
+import "package:the_pushapp/notifications/application/notifications_provider.dart";
+import "package:the_pushapp/notifications/data/fcm_stream.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    // initial DI
+    final container = ProviderContainer();
 
-  // Initialize Supabase, auth stream listener, websocket channels, and deep link handling
-  final container = ProviderContainer();
-  await container.read(clientProviderAsync.future);
+    // Firebase messaging
+    final fcm = await container.read(firebaseMessagingProvider.future);
+    await fcm.setAutoInitEnabled(true);
+    await fcm.getAPNSToken();
+    container.read(fcmTokenRefreshSubscriptionProvider);
+    container.read(fcmMessageStreamSubscriptionProvider);
 
-  container.read(usersChannelProvider);
-  container.read(groupChannelProvider);
-  container.read(deepLinkSubscriptionProvider);
+    // Supabase
+    await container.read(clientProviderAsync.future);
+    container.read(usersChannelProvider);
+    container.read(groupChannelProvider);
 
-  runApp(ProviderScope(
-    // TODO: splash screen?
-    // ignore: deprecated_member_use
-    parent: container,
-    child: const MyApp(),
-  ));
+    // Deeplink
+    container.read(deepLinkSubscriptionProvider);
+
+    runApp(ProviderScope(
+      // TODO: splash screen?
+      // ignore: deprecated_member_use
+      parent: container,
+      child: const MyApp(),
+    ));
+  } catch (e) {
+    print(e);
+  }
 }
 
 class MyApp extends StatelessWidget {

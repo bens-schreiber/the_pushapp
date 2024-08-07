@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'account.dart';
+part of "account.dart";
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -8,18 +8,20 @@ part of 'account.dart';
 
 _$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
     _$AccountImpl(
-      id: json['id'] as String,
-      firstName: json['first_name'] as String,
-      lastName: json['last_name'] as String,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      groupId: json['group_id'] as String?,
+      id: json["id"] as String,
+      firstName: json["first_name"] as String,
+      lastName: json["last_name"] as String,
+      createdAt: DateTime.parse(json["created_at"] as String),
+      fcm: json["fcm"] as String?,
+      groupId: json["group_id"] as String?,
     );
 
 Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'first_name': instance.firstName,
-      'last_name': instance.lastName,
-      'created_at': instance.createdAt.toIso8601String(),
-      'group_id': instance.groupId,
+      "id": instance.id,
+      "first_name": instance.firstName,
+      "last_name": instance.lastName,
+      "created_at": instance.createdAt.toIso8601String(),
+      "fcm": instance.fcm,
+      "group_id": instance.groupId,
     };

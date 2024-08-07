@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725642606088",
+    "project_id": "the-push-app-notifications",
+    "storage_bucket": "the-push-app-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725642606088:android:de39dba41928fe1c1803bd",
+        "android_client_info": {
+          "package_name": "com.bminschreib.thePushApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFIdydFDwi2UVDKa7_wWNLISycY7GWP1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

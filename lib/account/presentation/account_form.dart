@@ -6,7 +6,8 @@ import "package:the_pushapp/util.dart";
 
 class AccountForm extends StatefulWidget {
   final SupabaseClient client;
-  const AccountForm({required this.client, super.key});
+  final Function getNewFcm;
+  const AccountForm({required this.client, required this.getNewFcm, super.key});
 
   @override
   State<AccountForm> createState() => _AccountFormState();
@@ -23,9 +24,10 @@ class _AccountFormState extends State<AccountForm> {
     final lastName = _lastNameController.text;
 
     try {
-      await widget.client
+      final fcm = await widget.getNewFcm();
+      await await widget.client
           .from("Users")
-          .insert({"first_name": firstName, "last_name": lastName});
+          .insert({"first_name": firstName, "last_name": lastName, "fcm": fcm});
     } catch (e) {
       final t = "Error creating account: $e";
       log(t);
