@@ -1,19 +1,18 @@
 import "dart:developer";
 
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/account/application/account_provider.dart";
-import "package:the_pushapp/supabase_provider.dart";
+import "package:supabase_flutter/supabase_flutter.dart";
 import "package:the_pushapp/util.dart";
 
-class AccountForm extends ConsumerStatefulWidget {
-  const AccountForm({super.key});
+class AccountForm extends StatefulWidget {
+  final SupabaseClient client;
+  const AccountForm({required this.client, super.key});
 
   @override
-  ConsumerState<AccountForm> createState() => _AccountFormState();
+  State<AccountForm> createState() => _AccountFormState();
 }
 
-class _AccountFormState extends ConsumerState<AccountForm> {
+class _AccountFormState extends State<AccountForm> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -22,14 +21,11 @@ class _AccountFormState extends ConsumerState<AccountForm> {
     if (_formKey.currentState?.validate() != true) return;
     final firstName = _firstNameController.text;
     final lastName = _lastNameController.text;
-    final client = ref.read(clientProvider);
 
     try {
-      await client
+      await widget.client
           .from("Users")
           .insert({"first_name": firstName, "last_name": lastName});
-
-      ref.invalidate(accountProviderAsync);
     } catch (e) {
       final t = "Error creating account: $e";
       log(t);

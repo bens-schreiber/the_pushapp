@@ -4,17 +4,17 @@ import "package:flutter/material.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 import "package:the_pushapp/util.dart";
 
-class DeleteGroupButton extends StatelessWidget {
+class ActivateGroupButton extends StatelessWidget {
   final String groupId;
   final SupabaseClient client;
-  const DeleteGroupButton(
+  const ActivateGroupButton(
       {required this.client, required this.groupId, super.key});
 
-  Future<void> _deleteGroup(BuildContext context) async {
+  Future<void> _activateGroup(BuildContext context) async {
     try {
-      await client.from("Groups").delete().eq("id", groupId);
+      await client.from("Groups").update({"is_active": true}).eq("id", groupId);
     } catch (e) {
-      final t = "Error deleting group: $e";
+      final t = "Error creating group: $e";
       log(t);
 
       // ignore: use_build_context_synchronously
@@ -26,8 +26,8 @@ class DeleteGroupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: () async {
-          await _deleteGroup(context);
+          await _activateGroup(context);
         },
-        child: const Text("Delete Group"));
+        child: const Text("Activate Group"));
   }
 }

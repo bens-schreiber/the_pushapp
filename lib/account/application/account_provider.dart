@@ -25,9 +25,26 @@ final isAuthenticatedProvider = Provider<bool>((ref) {
   return ref.watch(isAuthenticatedProviderAsync).value == true;
 });
 
+/// Initializes the [RealtimeChannel] for the user table.
+final usersChannelProvider = Provider<RealtimeChannel>((ref) {
+  final client = ref.read(clientProvider);
+  return client
+      .channel("Users")
+      .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: "public",
+          table: "Users",
+          callback: (_) {
+            ref.invalidate(accountProviderAsync);
+          })
+      .subscribe();
+});
+
 /// The authenticated in users Account DTO.
 ///
 /// Listens to [isAuthenticatedProviderAsync].
+///
+/// Invalidated by the [_realtimeChannel] web socket.
 ///
 /// Needs to be manually invalidated when an account is modified.
 final accountProviderAsync = FutureProvider<Account?>((ref) async {

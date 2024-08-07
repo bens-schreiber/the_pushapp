@@ -1,40 +1,27 @@
 import "dart:developer";
 
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/util.dart";
 
-class LoginForm extends ConsumerWidget {
-  const LoginForm({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final supabase = ref.read(clientProvider);
-    return _LoginForm(supabase.auth);
-  }
-}
-
-class _LoginForm extends StatefulWidget {
+class LoginForm extends StatefulWidget {
   final GoTrueClient auth;
-  const _LoginForm(this.auth);
+  const LoginForm({required this.auth, super.key});
 
   @override
-  State<_LoginForm> createState() => _LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<_LoginForm> {
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  GoTrueClient get _auth => widget.auth;
 
   Future<void> _login() async {
     if (_formKey.currentState?.validate() != true) return;
 
     final email = _emailController.text;
     try {
-      await _auth.signInWithOtp(
+      await widget.auth.signInWithOtp(
           email: email,
           emailRedirectTo: "io.supabase.pushapp://login-callback/");
     } catch (e) {
