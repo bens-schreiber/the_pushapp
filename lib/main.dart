@@ -2,8 +2,8 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/account/application/account_provider.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/account/data/channel.dart";
+import "package:the_pushapp/group/data/channel.dart";
 import "package:the_pushapp/home/presentation/home.dart";
 import "package:the_pushapp/supabase_provider.dart";
 

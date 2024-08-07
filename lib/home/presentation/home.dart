@@ -10,6 +10,7 @@ import "package:the_pushapp/group/presentation/delete_group_button.dart";
 import "package:the_pushapp/group/presentation/join_group_form.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/common.dart";
+import "package:the_pushapp/token/presentation/increment_token_button.dart";
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -46,8 +47,9 @@ class HomeDisplay extends ConsumerWidget {
     final fab = FloatingActionButton(
         onPressed: client.auth.signOut, child: const Icon(Icons.logout));
 
-    final isGroupAdmin =
-        group != null && account != null && group.adminUserId == account.id;
+    final isGroupAdmin = group != null && group.adminUserId == account?.id;
+
+    final isTokenHolder = group != null && group.tokenUserId == account?.id;
 
     return Column(
       children: [
@@ -71,6 +73,10 @@ class HomeDisplay extends ConsumerWidget {
             ActivateGroupButton(client: client, groupId: group.id)
         ],
         const SizedBox(height: 20),
+
+        // Token
+        if (isTokenHolder)
+          IncrementTokenButton(client: client, token: group.token),
 
         // Logout
         if (isAuthenticated) fab

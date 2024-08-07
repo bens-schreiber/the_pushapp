@@ -4,21 +4,6 @@ import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/group/domain/group.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
-/// Initializes the [RealtimeChannel] for the group table.
-final groupChannelProvider = Provider<RealtimeChannel>((ref) {
-  final client = ref.read(clientProvider);
-  return client
-      .channel("Groups")
-      .onPostgresChanges(
-          event: PostgresChangeEvent.all,
-          schema: "public",
-          table: "Groups",
-          callback: (_) {
-            ref.invalidate(groupProviderAsync);
-          })
-      .subscribe();
-});
-
 /// The group the user is in.
 ///
 /// Listens to [accountProvider]
