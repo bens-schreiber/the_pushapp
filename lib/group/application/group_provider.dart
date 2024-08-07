@@ -24,8 +24,6 @@ final groupChannelProvider = Provider<RealtimeChannel>((ref) {
 /// Listens to [accountProvider]
 ///
 /// /// Invalidated by the [groupChannelProvider] web socket.
-///
-/// Needs to be manually invalidated when the group is modified.
 final groupProviderAsync = FutureProvider<Group?>((ref) async {
   final account = ref.watch(accountProvider);
   if (account == null || account.groupId == null) return null;

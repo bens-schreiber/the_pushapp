@@ -45,8 +45,6 @@ final usersChannelProvider = Provider<RealtimeChannel>((ref) {
 /// Listens to [isAuthenticatedProviderAsync].
 ///
 /// Invalidated by the [_realtimeChannel] web socket.
-///
-/// Needs to be manually invalidated when an account is modified.
 final accountProviderAsync = FutureProvider<Account?>((ref) async {
   final isLoggedIn = ref.watch(isAuthenticatedProviderAsync);
   if (isLoggedIn.value != true) return null;
