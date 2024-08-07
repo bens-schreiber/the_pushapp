@@ -24,7 +24,7 @@ mixin _$Account {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  int? get groupId => throw _privateConstructorUsedError;
+  String? get groupId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +41,7 @@ abstract class $AccountCopyWith<$Res> {
       String firstName,
       String lastName,
       DateTime createdAt,
-      int? groupId});
+      String? groupId});
 }
 
 /// @nodoc
@@ -83,7 +83,7 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
       groupId: freezed == groupId
           ? _value.groupId
           : groupId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
     ) as $Val);
   }
 }
@@ -100,7 +100,7 @@ abstract class _$$AccountImplCopyWith<$Res> implements $AccountCopyWith<$Res> {
       String firstName,
       String lastName,
       DateTime createdAt,
-      int? groupId});
+      String? groupId});
 }
 
 /// @nodoc
@@ -140,7 +140,7 @@ class __$$AccountImplCopyWithImpl<$Res>
       groupId: freezed == groupId
           ? _value.groupId
           : groupId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
     ));
   }
 }
@@ -168,7 +168,7 @@ class _$AccountImpl implements _Account {
   @override
   final DateTime createdAt;
   @override
-  final int? groupId;
+  final String? groupId;
 
   @override
   String toString() {
@@ -215,7 +215,7 @@ abstract class _Account implements Account {
       required final String firstName,
       required final String lastName,
       required final DateTime createdAt,
-      final int? groupId}) = _$AccountImpl;
+      final String? groupId}) = _$AccountImpl;
 
   factory _Account.fromJson(Map<String, dynamic> json) = _$AccountImpl.fromJson;
 
@@ -228,7 +228,7 @@ abstract class _Account implements Account {
   @override
   DateTime get createdAt;
   @override
-  int? get groupId;
+  String? get groupId;
   @override
   @JsonKey(ignore: true)
   _$$AccountImplCopyWith<_$AccountImpl> get copyWith =>

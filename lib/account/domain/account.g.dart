@@ -12,7 +12,7 @@ _$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
-      groupId: (json['group_id'] as num?)?.toInt(),
+      groupId: json['group_id'] as String?,
     );
 
 Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>

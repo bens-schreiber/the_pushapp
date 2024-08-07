@@ -12,7 +12,7 @@ class Account with _$Account {
     required String firstName,
     required String lastName,
     required DateTime createdAt,
-    int? groupId,
+    String? groupId,
   }) = _Account;
 
   factory Account.fromJson(Map<String, dynamic> json) =>

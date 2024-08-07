@@ -20,13 +20,12 @@ Group _$GroupFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Group {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String get adminUserId => throw _privateConstructorUsedError;
   int get token => throw _privateConstructorUsedError;
   String? get tokenUserId => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
-  String get inviteId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,13 +38,12 @@ abstract class $GroupCopyWith<$Res> {
       _$GroupCopyWithImpl<$Res, Group>;
   @useResult
   $Res call(
-      {int id,
+      {String id,
       DateTime createdAt,
       String adminUserId,
       int token,
       String? tokenUserId,
-      bool isActive,
-      String inviteId});
+      bool isActive});
 }
 
 /// @nodoc
@@ -67,13 +65,12 @@ class _$GroupCopyWithImpl<$Res, $Val extends Group>
     Object? token = null,
     Object? tokenUserId = freezed,
     Object? isActive = null,
-    Object? inviteId = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -94,10 +91,6 @@ class _$GroupCopyWithImpl<$Res, $Val extends Group>
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
-      inviteId: null == inviteId
-          ? _value.inviteId
-          : inviteId // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -110,13 +103,12 @@ abstract class _$$GroupImplCopyWith<$Res> implements $GroupCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
+      {String id,
       DateTime createdAt,
       String adminUserId,
       int token,
       String? tokenUserId,
-      bool isActive,
-      String inviteId});
+      bool isActive});
 }
 
 /// @nodoc
@@ -136,13 +128,12 @@ class __$$GroupImplCopyWithImpl<$Res>
     Object? token = null,
     Object? tokenUserId = freezed,
     Object? isActive = null,
-    Object? inviteId = null,
   }) {
     return _then(_$GroupImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -163,10 +154,6 @@ class __$$GroupImplCopyWithImpl<$Res>
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
-      inviteId: null == inviteId
-          ? _value.inviteId
-          : inviteId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -181,14 +168,13 @@ class _$GroupImpl implements _Group {
       required this.adminUserId,
       required this.token,
       required this.tokenUserId,
-      required this.isActive,
-      required this.inviteId});
+      required this.isActive});
 
   factory _$GroupImpl.fromJson(Map<String, dynamic> json) =>
       _$$GroupImplFromJson(json);
 
   @override
-  final int id;
+  final String id;
   @override
   final DateTime createdAt;
   @override
@@ -199,12 +185,10 @@ class _$GroupImpl implements _Group {
   final String? tokenUserId;
   @override
   final bool isActive;
-  @override
-  final String inviteId;
 
   @override
   String toString() {
-    return 'Group(id: $id, createdAt: $createdAt, adminUserId: $adminUserId, token: $token, tokenUserId: $tokenUserId, isActive: $isActive, inviteId: $inviteId)';
+    return 'Group(id: $id, createdAt: $createdAt, adminUserId: $adminUserId, token: $token, tokenUserId: $tokenUserId, isActive: $isActive)';
   }
 
   @override
@@ -221,15 +205,13 @@ class _$GroupImpl implements _Group {
             (identical(other.tokenUserId, tokenUserId) ||
                 other.tokenUserId == tokenUserId) &&
             (identical(other.isActive, isActive) ||
-                other.isActive == isActive) &&
-            (identical(other.inviteId, inviteId) ||
-                other.inviteId == inviteId));
+                other.isActive == isActive));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, adminUserId,
-      token, tokenUserId, isActive, inviteId);
+  int get hashCode => Object.hash(
+      runtimeType, id, createdAt, adminUserId, token, tokenUserId, isActive);
 
   @JsonKey(ignore: true)
   @override
@@ -247,18 +229,17 @@ class _$GroupImpl implements _Group {
 
 abstract class _Group implements Group {
   const factory _Group(
-      {required final int id,
+      {required final String id,
       required final DateTime createdAt,
       required final String adminUserId,
       required final int token,
       required final String? tokenUserId,
-      required final bool isActive,
-      required final String inviteId}) = _$GroupImpl;
+      required final bool isActive}) = _$GroupImpl;
 
   factory _Group.fromJson(Map<String, dynamic> json) = _$GroupImpl.fromJson;
 
   @override
-  int get id;
+  String get id;
   @override
   DateTime get createdAt;
   @override
@@ -269,8 +250,6 @@ abstract class _Group implements Group {
   String? get tokenUserId;
   @override
   bool get isActive;
-  @override
-  String get inviteId;
   @override
   @JsonKey(ignore: true)
   _$$GroupImplCopyWith<_$GroupImpl> get copyWith =>

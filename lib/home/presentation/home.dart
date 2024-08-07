@@ -6,6 +6,7 @@ import "package:the_pushapp/account/presentation/login_form.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/group/presentation/create_group_button.dart";
 import "package:the_pushapp/group/presentation/delete_group_button.dart";
+import "package:the_pushapp/group/presentation/join_group_form.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/common.dart";
 
@@ -61,7 +62,10 @@ class HomeDisplay extends ConsumerWidget {
         const SizedBox(height: 20),
 
         // Groups
-        if (group == null && account != null) const CreateGroupButton(),
+        if (group == null && account != null) ...[
+          const CreateGroupButton(),
+          const JoinGroupForm()
+        ],
         if (group != null) groupDisplay,
         if (isGroupAdmin) DeleteGroupButton(groupId: group.id),
         const SizedBox(height: 20),

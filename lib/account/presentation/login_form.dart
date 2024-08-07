@@ -1,7 +1,10 @@
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/util.dart";
 
 class LoginForm extends ConsumerWidget {
   const LoginForm({super.key});
@@ -35,32 +38,38 @@ class _LoginFormState extends State<_LoginForm> {
           email: email,
           emailRedirectTo: "io.supabase.pushapp://login-callback/");
     } catch (e) {
-      print("Error: $e");
+      final t = "Error logging in: $e";
+      log(t);
+
+      // ignore: use_build_context_synchronously
+      showSnackbar(t, context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Email"),
-            controller: _emailController,
-            validator: (value) {
-              if (value?.isEmpty == true) {
-                return "Please enter your email";
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: _login,
-            child: const Text("Login"),
-          ),
-        ],
+    return Card(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Email"),
+              controller: _emailController,
+              validator: (value) {
+                if (value?.isEmpty == true) {
+                  return "Please enter your email";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: _login,
+              child: const Text("Login"),
+            ),
+          ],
+        ),
       ),
     );
   }

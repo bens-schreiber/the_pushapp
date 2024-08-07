@@ -7,13 +7,12 @@ part of 'group.dart';
 // **************************************************************************
 
 _$GroupImpl _$$GroupImplFromJson(Map<String, dynamic> json) => _$GroupImpl(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       adminUserId: json['admin_user_id'] as String,
       token: (json['token'] as num).toInt(),
       tokenUserId: json['token_user_id'] as String?,
       isActive: json['is_active'] as bool,
-      inviteId: json['invite_id'] as String,
     );
 
 Map<String, dynamic> _$$GroupImplToJson(_$GroupImpl instance) =>
@@ -24,5 +23,4 @@ Map<String, dynamic> _$$GroupImplToJson(_$GroupImpl instance) =>
       'token': instance.token,
       'token_user_id': instance.tokenUserId,
       'is_active': instance.isActive,
-      'invite_id': instance.inviteId,
     };

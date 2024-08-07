@@ -27,23 +27,38 @@ class AsyncValueDisplay extends ConsumerWidget {
 }
 
 /// Shows a loading widget while the loaders are loading
-class Loader extends ConsumerWidget {
+class Loader extends ConsumerStatefulWidget {
   final Widget child;
   final Widget onLoading;
   final List<ProviderBase<AsyncValue<Object?>>> loaders;
+  final bool loadOnce;
   const Loader(
       {required this.child,
       required this.loaders,
       this.onLoading = const LinearProgressIndicator(),
+      this.loadOnce = true,
       super.key});
 
+  @override
+  ConsumerState<Loader> createState() => _LoaderState();
+}
+
+class _LoaderState extends ConsumerState<Loader> {
   bool isLoading(List<AsyncValue> asyncValues) {
     return asyncValues.any((asyncValue) => asyncValue.isLoading);
   }
 
+  bool loaded = false;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValues = loaders.map((l) => ref.watch(l)).toList();
-    return isLoading(asyncValues) ? onLoading : child;
+  Widget build(BuildContext context) {
+    if (loaded && widget.loadOnce) {
+      return widget.child;
+    }
+
+    final asyncValues = widget.loaders.map((l) => ref.watch(l)).toList();
+    final finishedLoading = !isLoading(asyncValues);
+    loaded = loaded || finishedLoading;
+    return finishedLoading ? widget.child : widget.onLoading;
   }
 }
