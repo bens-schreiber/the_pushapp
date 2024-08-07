@@ -1,11 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:supabase_flutter/supabase_flutter.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
+import "package:the_pushapp/supabase_provider.dart";
 
 class AccountForm extends ConsumerStatefulWidget {
-  final SupabaseClient client;
-  const AccountForm({super.key, required this.client});
+  const AccountForm({super.key});
 
   @override
   ConsumerState<AccountForm> createState() => _AccountFormState();
@@ -20,9 +19,10 @@ class _AccountFormState extends ConsumerState<AccountForm> {
     if (_formKey.currentState?.validate() != true) return;
     final firstName = _firstNameController.text;
     final lastName = _lastNameController.text;
+    final client = ref.read(clientProvider);
 
     try {
-      await widget.client
+      await client
           .from("Users")
           .insert({"first_name": firstName, "last_name": lastName});
 
