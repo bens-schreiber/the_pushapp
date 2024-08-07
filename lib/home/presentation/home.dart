@@ -4,7 +4,8 @@ import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/presentation/account_form.dart";
 import "package:the_pushapp/account/presentation/login_form.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
-import "package:the_pushapp/group/presentation/create_group_form.dart";
+import "package:the_pushapp/group/presentation/create_group_button.dart";
+import "package:the_pushapp/group/presentation/delete_group_button.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/common.dart";
 
@@ -23,7 +24,7 @@ class Home extends StatelessWidget {
             ],
             child: const Center(
               child: Padding(
-                padding: EdgeInsets.only(top: 100),
+                padding: EdgeInsets.only(top: 100, left: 10, right: 10),
                 child: HomeDisplay(),
               ),
             ),
@@ -46,6 +47,9 @@ class HomeDisplay extends ConsumerWidget {
     final accountDisplay = AsyncValueDisplay(data: accountProviderAsync);
     final groupDisplay = AsyncValueDisplay(data: groupProviderAsync);
 
+    final isGroupAdmin =
+        group != null && account != null && group.adminUserId == account.id;
+
     return Column(
       children: [
         // Login
@@ -57,8 +61,9 @@ class HomeDisplay extends ConsumerWidget {
         const SizedBox(height: 20),
 
         // Groups
-        if (group == null && account != null) const CreateGroupForm(),
+        if (group == null && account != null) const CreateGroupButton(),
         if (group != null) groupDisplay,
+        if (isGroupAdmin) DeleteGroupButton(groupId: group.id),
         const SizedBox(height: 20),
 
         // Logout

@@ -6,21 +6,16 @@ import "package:supabase_flutter/supabase_flutter.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
-class CreateGroupForm extends ConsumerWidget {
-  const CreateGroupForm({super.key});
+class DeleteGroupButton extends ConsumerWidget {
+  final int groupId;
+  const DeleteGroupButton({required this.groupId, super.key});
 
-  Future<bool> _createGroup(SupabaseClient client) async {
+  Future<bool> _deleteGroup(SupabaseClient client) async {
     try {
-      final groupId =
-          await client.from("Groups").insert({}) // use default values
-              .select("id");
-
-      await client.from("Users").update({"group_id": groupId.first["id"]}).eq(
-          "id", client.auth.currentUser!.id);
-
+      await client.from("Groups").delete().eq("id", groupId);
       return true;
     } catch (e) {
-      log("Error creating group: $e");
+      log("Error deleting group: $e");
       return false;
     }
   }
@@ -30,9 +25,9 @@ class CreateGroupForm extends ConsumerWidget {
     final client = ref.read(clientProvider);
     return TextButton(
         onPressed: () async {
-          if (!await _createGroup(client)) return;
+          if (!await _deleteGroup(client)) return;
           ref.invalidate(accountProviderAsync);
         },
-        child: const Text("Create Group"));
+        child: const Text("Delete Group"));
   }
 }
