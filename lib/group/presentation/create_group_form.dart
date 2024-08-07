@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
@@ -18,7 +20,7 @@ class CreateGroupForm extends ConsumerWidget {
 
       return true;
     } catch (e) {
-      print("Error creating group: $e");
+      log("Error creating group: $e");
       return false;
     }
   }

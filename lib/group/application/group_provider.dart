@@ -20,8 +20,6 @@ final groupProviderAsync = FutureProvider<Group?>((ref) async {
       .eq("id", account.groupId!)
       .count(CountOption.exact);
 
-  print(Group.fromJson(group.data.first));
-
   return group.count == 0 ? null : Group.fromJson(group.data.first);
 });
 

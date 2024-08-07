@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
@@ -28,7 +30,7 @@ class _AccountFormState extends ConsumerState<AccountForm> {
 
       ref.invalidate(accountProviderAsync);
     } catch (e) {
-      print("Error creating account: $e");
+      log("Error creating account: $e");
     }
   }
 
