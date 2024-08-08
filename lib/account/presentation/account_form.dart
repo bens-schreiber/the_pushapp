@@ -27,7 +27,7 @@ class _AccountFormState extends ConsumerState<AccountForm> {
       final lastName = _lastNameController.text;
 
       final client = ref.read(clientProvider);
-      final fcm = await ref.read(fcmTokenProvider.future);
+      final fcm = await ref.read(fcmTokenProviderAsync.future);
       await await client
           .from("Users")
           .insert({"first_name": firstName, "last_name": lastName, "fcm": fcm});

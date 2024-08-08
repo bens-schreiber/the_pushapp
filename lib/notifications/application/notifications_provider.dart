@@ -4,17 +4,17 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:the_pushapp/firebase_options.dart";
 
 /// Provides the [FirebaseMessaging] instance.
-final firebaseMessagingProvider = FutureProvider((ref) async {
+final firebaseMessagingProviderAsync = FutureProvider((ref) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   return FirebaseMessaging.instance;
 });
 
 /// Provides the [NotificationSettings] for the [FirebaseMessaging] instance.
 ///
-/// Listens to [firebaseMessagingProvider]
-final notificationPreferencesProvider =
+/// Listens to [firebaseMessagingProviderAsync]
+final notificationPreferencesProviderAsync =
     FutureProvider<NotificationSettings?>((ref) async {
-  final fcmAsync = ref.watch(firebaseMessagingProvider);
+  final fcmAsync = ref.watch(firebaseMessagingProviderAsync);
   if (fcmAsync.hasError || fcmAsync.isLoading) return null;
 
   final fcm = fcmAsync.value!;
@@ -22,8 +22,8 @@ final notificationPreferencesProvider =
 });
 
 /// Creates a new FCM token
-final fcmTokenProvider = FutureProvider<String?>((ref) async {
-  final fcmAsync = ref.watch(firebaseMessagingProvider);
+final fcmTokenProviderAsync = FutureProvider<String?>((ref) async {
+  final fcmAsync = ref.watch(firebaseMessagingProviderAsync);
   if (fcmAsync.hasError || fcmAsync.isLoading) return null;
 
   return await fcmAsync.value!.getToken();

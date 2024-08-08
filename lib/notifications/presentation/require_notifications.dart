@@ -9,7 +9,8 @@ class RequireNotifications extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationPreferences = ref.watch(notificationPreferencesProvider);
+    final notificationPreferences =
+        ref.watch(notificationPreferencesProviderAsync);
 
     error(e) => Scaffold(
           body: Center(
@@ -18,7 +19,8 @@ class RequireNotifications extends ConsumerWidget {
               children: [
                 Text("Error: $e"),
                 ElevatedButton(
-                  onPressed: () => ref.refresh(notificationPreferencesProvider),
+                  onPressed: () =>
+                      ref.refresh(notificationPreferencesProviderAsync),
                   child: const Text("Retry"),
                 )
               ],
@@ -40,13 +42,13 @@ class RequireNotifications extends ConsumerWidget {
         final enabled = hasNotificationsEnabled(s);
         if (!enabled) {
           ref
-              .read(firebaseMessagingProvider)
+              .read(firebaseMessagingProviderAsync)
               .value!
               .requestPermission(alert: true, announcement: true)
               .then((_) async {
             await Future.delayed(
                 const Duration(seconds: 1)); // rebuilds too fast
-            ref.invalidate(notificationPreferencesProvider);
+            ref.invalidate(notificationPreferencesProviderAsync);
           });
 
           return requireNotifications;

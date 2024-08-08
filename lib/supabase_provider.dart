@@ -3,6 +3,7 @@ import "dart:async";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
+import "package:the_pushapp/notifications/application/notifications_provider.dart";
 
 // ignore: unused_element
 late StreamSubscription _authSubscription;
@@ -26,7 +27,17 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   final session = prefs.getString("session");
   if (session != null) {
     try {
-      await client.auth.setSession(session);
+      final recoveredSession =
+          (await client.auth.setSession(session)).session != null;
+
+      if (recoveredSession) {
+        final fcm = await ref.read(fcmTokenProviderAsync.future);
+
+        // Update FCM token every login
+        await client
+            .from("Users")
+            .update({"fcm": fcm}).eq("id", client.auth.currentUser!.id);
+      }
     } catch (_) {}
   }
 

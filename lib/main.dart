@@ -17,10 +17,9 @@ Future<void> main() async {
     final container = ProviderContainer();
 
     // Firebase messaging
-    final fcm = await container.read(firebaseMessagingProvider.future);
+    final fcm = await container.read(firebaseMessagingProviderAsync.future);
     await fcm.setAutoInitEnabled(true);
     await fcm.getAPNSToken();
-    container.read(fcmTokenRefreshSubscriptionProvider);
     container.read(fcmMessageStreamSubscriptionProvider);
 
     // Supabase

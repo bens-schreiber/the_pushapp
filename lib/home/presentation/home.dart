@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/presentation/account_form.dart";
 import "package:the_pushapp/account/presentation/login_form.dart";
+import "package:the_pushapp/account/presentation/signout_button.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/group/presentation/activate_group_button.dart";
 import "package:the_pushapp/group/presentation/create_group_button.dart";
@@ -52,11 +53,6 @@ class HomeDisplay extends ConsumerWidget {
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
     final isTokenHolder = group != null && group.tokenUserId == account?.id;
 
-    final fab = FloatingActionButton(
-      onPressed: client.auth.signOut,
-      child: const Icon(Icons.logout),
-    );
-
     return Column(
       children: [
         // Login
@@ -77,14 +73,13 @@ class HomeDisplay extends ConsumerWidget {
           DeleteGroupButton(groupId: group.id),
           if (!group.isActive) ActivateGroupButton(groupId: group.id)
         ],
-        const SizedBox(height: 20),
 
         // Token
         if (isTokenHolder)
           IncrementTokenButton(client: client, token: group.token),
 
         // Logout
-        if (isAuthenticated) fab
+        if (isAuthenticated) const SignoutButton()
       ],
     );
   }
