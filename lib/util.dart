@@ -7,9 +7,9 @@ void showSnackbar(String text, BuildContext context) {
   ));
 }
 
-bool useErrorSnackbar(Function f, BuildContext context) {
+Future<bool> useErrorHandle(Function f, BuildContext context) async {
   try {
-    f();
+    await f();
     return true;
   } catch (e) {
     final error = "Error: $e";

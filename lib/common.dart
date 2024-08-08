@@ -72,7 +72,7 @@ class HandleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    action() => useErrorSnackbar(onPressed, context);
+    action() => useErrorHandle(onPressed, context);
     return TextButton(
       onPressed: action,
       child: child,
