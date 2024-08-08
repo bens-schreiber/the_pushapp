@@ -1,44 +1,40 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
-import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/util.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/account/application/account_provider.dart";
+import "package:the_pushapp/common.dart";
+import "package:the_pushapp/notifications/application/notifications_provider.dart";
+import "package:the_pushapp/supabase_provider.dart";
 
-class AccountForm extends StatefulWidget {
-  final SupabaseClient client;
-  final Function getNewFcm;
-  const AccountForm({required this.client, required this.getNewFcm, super.key});
+class AccountForm extends ConsumerStatefulWidget {
+  const AccountForm({super.key});
 
   @override
-  State<AccountForm> createState() => _AccountFormState();
+  ConsumerState<AccountForm> createState() => _AccountFormState();
 }
 
-class _AccountFormState extends State<AccountForm> {
+class _AccountFormState extends ConsumerState<AccountForm> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
-  Future<void> _createAccount() async {
-    if (_formKey.currentState?.validate() != true) return;
-    final firstName = _firstNameController.text;
-    final lastName = _lastNameController.text;
-
-    try {
-      final fcm = await widget.getNewFcm();
-      await await widget.client
-          .from("Users")
-          .insert({"first_name": firstName, "last_name": lastName, "fcm": fcm});
-    } catch (e) {
-      final t = "Error creating account: $e";
-      log(t);
-
-      // ignore: use_build_context_synchronously
-      showSnackbar(t, context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    validate() => _formKey.currentState?.validate() == true;
+
+    createAccount() async {
+      if (!validate()) return;
+      final firstName = _firstNameController.text;
+      final lastName = _lastNameController.text;
+
+      final client = ref.read(clientProvider);
+      final fcm = await ref.read(fcmTokenProvider.future);
+      await await client
+          .from("Users")
+          .insert({"first_name": firstName, "last_name": lastName, "fcm": fcm});
+
+      ref.invalidate(accountProviderAsync);
+    }
+
     return Card(
       child: Form(
         key: _formKey,
@@ -65,8 +61,8 @@ class _AccountFormState extends State<AccountForm> {
               },
             ),
             const SizedBox(height: 10),
-            TextButton(
-              onPressed: _createAccount,
+            HandleButton(
+              onPressed: createAccount,
               child: const Text("Create account"),
             ),
           ],

@@ -6,3 +6,14 @@ void showSnackbar(String text, BuildContext context) {
     content: Text(text),
   ));
 }
+
+bool useErrorSnackbar(Function f, BuildContext context) {
+  try {
+    f();
+    return true;
+  } catch (e) {
+    final error = "Error: $e";
+    showSnackbar(error, context);
+    return false;
+  }
+}

@@ -8,7 +8,6 @@ import "package:the_pushapp/group/presentation/activate_group_button.dart";
 import "package:the_pushapp/group/presentation/create_group_button.dart";
 import "package:the_pushapp/group/presentation/delete_group_button.dart";
 import "package:the_pushapp/group/presentation/join_group_form.dart";
-import "package:the_pushapp/notifications/application/notifications_provider.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/common.dart";
@@ -58,31 +57,25 @@ class HomeDisplay extends ConsumerWidget {
       child: const Icon(Icons.logout),
     );
 
-    final accountForm = AccountForm(
-      client: client,
-      getNewFcm: () async => await ref.read(fcmTokenProvider.future),
-    );
-
     return Column(
       children: [
         // Login
-        if (!isAuthenticated) LoginForm(auth: client.auth),
+        if (!isAuthenticated) const LoginForm(),
 
         // Account
-        if (account == null && isAuthenticated) accountForm,
+        if (account == null && isAuthenticated) const AccountForm(),
         if (account != null) AsyncValueDisplay(data: accountProviderAsync),
         const SizedBox(height: 20),
 
         // Groups
         if (group == null && account != null) ...[
-          CreateGroupButton(client: client),
-          JoinGroupForm(client: client)
+          const CreateGroupButton(),
+          const JoinGroupForm()
         ],
         if (group != null) AsyncValueDisplay(data: groupProviderAsync),
         if (isGroupAdmin) ...[
-          DeleteGroupButton(client: client, groupId: group.id),
-          if (!group.isActive)
-            ActivateGroupButton(client: client, groupId: group.id)
+          DeleteGroupButton(groupId: group.id),
+          if (!group.isActive) ActivateGroupButton(groupId: group.id)
         ],
         const SizedBox(height: 20),
 

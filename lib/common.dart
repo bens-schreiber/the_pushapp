@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/util.dart";
 
 /// Displays the value of an [AsyncValue] provider in a widget
 ///
@@ -60,5 +61,21 @@ class _LoaderState extends ConsumerState<Loader> {
     final finishedLoading = !isLoading(asyncValues);
     loaded = loaded || finishedLoading;
     return finishedLoading ? widget.child : widget.onLoading;
+  }
+}
+
+/// Handles error via a snackbar
+class HandleButton extends StatelessWidget {
+  final Widget child;
+  final void Function() onPressed;
+  const HandleButton({super.key, required this.child, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    action() => useErrorSnackbar(onPressed, context);
+    return TextButton(
+      onPressed: action,
+      child: child,
+    );
   }
 }

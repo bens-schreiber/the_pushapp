@@ -1,33 +1,22 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
-import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/util.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/common.dart";
+import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/supabase_provider.dart";
 
-class DeleteGroupButton extends StatelessWidget {
+class DeleteGroupButton extends ConsumerWidget {
   final String groupId;
-  final SupabaseClient client;
-  const DeleteGroupButton(
-      {required this.client, required this.groupId, super.key});
-
-  Future<void> _deleteGroup(BuildContext context) async {
-    try {
-      await client.from("Groups").delete().eq("id", groupId);
-    } catch (e) {
-      final t = "Error deleting group: $e";
-      log(t);
-
-      // ignore: use_build_context_synchronously
-      showSnackbar(t, context);
-    }
-  }
+  const DeleteGroupButton({required this.groupId, super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: () async {
-          await _deleteGroup(context);
-        },
-        child: const Text("Delete Group"));
+  Widget build(BuildContext context, WidgetRef ref) {
+    delete() async {
+      final client = ref.read(clientProvider);
+      await client.from("Groups").delete().eq("id", groupId);
+
+      ref.invalidate(groupProviderAsync);
+    }
+
+    return HandleButton(onPressed: delete, child: const Text("Delete Group"));
   }
 }

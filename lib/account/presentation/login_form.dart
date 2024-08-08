@@ -1,40 +1,34 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
-import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/util.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/common.dart";
+import "package:the_pushapp/supabase_provider.dart";
 
-class LoginForm extends StatefulWidget {
-  final GoTrueClient auth;
-  const LoginForm({required this.auth, super.key});
+class LoginForm extends ConsumerStatefulWidget {
+  const LoginForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  ConsumerState<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
-  Future<void> _login() async {
-    if (_formKey.currentState?.validate() != true) return;
-
-    final email = _emailController.text;
-    try {
-      await widget.auth.signInWithOtp(
-          email: email,
-          emailRedirectTo: "io.supabase.pushapp://login-callback/");
-    } catch (e) {
-      final t = "Error logging in: $e";
-      log(t);
-
-      // ignore: use_build_context_synchronously
-      showSnackbar(t, context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    validate() => _formKey.currentState?.validate() == true;
+
+    login() async {
+      if (!validate()) return;
+      final email = _emailController.text;
+      final client = ref.read(clientProvider);
+
+      // On success this will stream an auth event handled by [isAuthenticatedProviderAsync]
+      await client.auth.signInWithOtp(
+          email: email,
+          emailRedirectTo: "io.supabase.pushapp://login-callback/");
+    }
+
     return Card(
       child: Form(
         key: _formKey,
@@ -51,8 +45,8 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             const SizedBox(height: 10),
-            TextButton(
-              onPressed: _login,
+            HandleButton(
+              onPressed: login,
               child: const Text("Login"),
             ),
           ],

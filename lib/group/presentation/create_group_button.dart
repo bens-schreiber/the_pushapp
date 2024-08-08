@@ -1,36 +1,29 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
-import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/util.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/account/application/account_provider.dart";
+import "package:the_pushapp/common.dart";
+import "package:the_pushapp/supabase_provider.dart";
 
-class CreateGroupButton extends StatelessWidget {
-  final SupabaseClient client;
-  const CreateGroupButton({required this.client, super.key});
+class CreateGroupButton extends ConsumerWidget {
+  const CreateGroupButton({super.key});
 
-  Future<void> _createGroup(BuildContext context) async {
-    try {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    createGroup() async {
+      final client = ref.read(clientProvider);
       final groupId =
           await client.from("Groups").insert({}) // use default values
               .select("id");
 
       await client.from("Users").update({"group_id": groupId.first["id"]}).eq(
           "id", client.auth.currentUser!.id);
-    } catch (e) {
-      final t = "Error creating group: $e";
-      log(t);
 
-      // ignore: use_build_context_synchronously
-      showSnackbar(t, context);
+      ref.invalidate(accountProviderAsync);
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: () async {
-          await _createGroup(context);
-        },
-        child: const Text("Create Group"));
+    return HandleButton(
+      onPressed: createGroup,
+      child: const Text("Create Group"),
+    );
   }
 }
