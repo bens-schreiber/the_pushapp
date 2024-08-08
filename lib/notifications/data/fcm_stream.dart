@@ -10,6 +10,7 @@ import "package:the_pushapp/supabase_provider.dart";
 final fcmMessageStreamSubscriptionProvider =
     Provider<StreamSubscription>((ref) {
   return FirebaseMessaging.onMessage.listen((message) {
+    print("message: $message");
     ref.invalidate(accountProvider); //TODO: may only want to invalidate group
   });
 });

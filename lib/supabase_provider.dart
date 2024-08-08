@@ -25,16 +25,20 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   final prefs = await SharedPreferences.getInstance();
   final session = prefs.getString("session");
   if (session != null) {
-    client.auth.recoverSession(session);
+    try {
+      await client.auth.setSession(session);
+    } catch (_) {}
   }
 
   // Listen to auth state changes and persist the session
   _authSubscription = client.auth.onAuthStateChange.listen((state) async {
     if (state.event == AuthChangeEvent.signedOut) {
       await prefs.remove("session");
+    } else if (state.event == AuthChangeEvent.tokenRefreshed) {
+      await prefs.setString("session", state.session!.refreshToken!);
     } else {
       await prefs.setString(
-          "session", client.auth.currentSession!.toJson().toString());
+          "session", client.auth.currentSession!.refreshToken!);
     }
   });
 

@@ -10,7 +10,7 @@ final isAuthenticatedProviderAsync = FutureProvider<bool>((ref) async {
   final clientFuture = ref.watch(clientProviderAsync);
   final authStream = ref.watch(clientAuthStreamProvider);
   if (authStream.hasValue) {
-    return authStream.value?.event == AuthChangeEvent.signedIn;
+    return authStream.value?.event != AuthChangeEvent.signedOut;
   }
   return clientFuture.when(
       data: (value) async => value.auth.currentSession != null,

@@ -48,10 +48,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "The Push App",
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const Home());
+      title: "The Push App",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      themeMode: ThemeMode.dark,
+      home: const Home(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
