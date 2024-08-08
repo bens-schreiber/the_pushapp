@@ -8,12 +8,6 @@ import "package:the_pushapp/supabase_provider.dart";
 
 /// Initializes providers for the loading screen.
 final loadingScreenProviderAsync = FutureProvider<bool>((ref) async {
-  // Firebase messaging
-  final fcm = await ref.read(firebaseMessagingProviderAsync.future);
-  await fcm.setAutoInitEnabled(true);
-  await fcm.getAPNSToken();
-  ref.read(fcmMessageStreamSubscriptionProvider);
-
   // Supabase
   await ref.read(clientProviderAsync.future);
   ref.read(usersChannelProvider);
@@ -21,6 +15,13 @@ final loadingScreenProviderAsync = FutureProvider<bool>((ref) async {
 
   // Deeplink
   ref.read(deepLinkSubscriptionProvider);
+
+  // Firebase messaging
+  final fcm = await ref.read(firebaseMessagingProviderAsync.future);
+  await fcm.setAutoInitEnabled(true);
+  await fcm.getAPNSToken();
+  ref.read(fcmMessageStreamSubscriptionProvider);
+
   return true;
 });
 

@@ -13,7 +13,7 @@ class HomeScreen extends ConsumerWidget {
     final animationComplete = ref.watch(loadingAnimationStateProvider);
     final loadingAsync = ref.watch(loadingScreenProviderAsync);
 
-    final sheetEnabled = animationComplete && loadingAsync.hasValue;
+    final sheetEnabled = animationComplete && loadingAsync.value == true;
 
     final logo = Container(
       width: 225.0,

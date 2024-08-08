@@ -1,16 +1,18 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/home/application/home_provider.dart";
 
-class SlidingBottomSheet extends StatefulWidget {
+class SlidingBottomSheet extends ConsumerStatefulWidget {
   final Widget minimizedChild;
   final Widget expandedChild;
   const SlidingBottomSheet(
       {super.key, required this.minimizedChild, required this.expandedChild});
 
   @override
-  State<SlidingBottomSheet> createState() => _SlidingBottomSheetState();
+  ConsumerState<SlidingBottomSheet> createState() => _SlidingBottomSheetState();
 }
 
-class _SlidingBottomSheetState extends State<SlidingBottomSheet>
+class _SlidingBottomSheetState extends ConsumerState<SlidingBottomSheet>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -27,6 +29,11 @@ class _SlidingBottomSheetState extends State<SlidingBottomSheet>
 
   @override
   Widget build(BuildContext context) {
+    final doneLoading = ref.watch(loadingAnimationStateProvider);
+    if (doneLoading) {
+      _controller.forward();
+    }
+
     onTap() {
       if (_controller.isAnimating) return;
       _controller.isCompleted ? _controller.reverse() : _controller.forward();

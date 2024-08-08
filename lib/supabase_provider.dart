@@ -45,11 +45,9 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   _authSubscription = client.auth.onAuthStateChange.listen((state) async {
     if (state.event == AuthChangeEvent.signedOut) {
       await prefs.remove("session");
-    } else if (state.event == AuthChangeEvent.tokenRefreshed) {
-      await prefs.setString("session", state.session!.refreshToken!);
     } else {
-      await prefs.setString(
-          "session", client.auth.currentSession!.refreshToken!);
+      if (client.auth.currentSession == null) return;
+      await prefs.setString("session", client.auth.currentSession!.toString());
     }
   });
 
