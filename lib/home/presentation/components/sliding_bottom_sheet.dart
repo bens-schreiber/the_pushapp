@@ -22,9 +22,12 @@ class SlidingBottomSheet extends HookConsumerWidget {
       Tween<double>(begin: 0, end: 300).animate(controller),
     );
 
-    if (doneLoading) {
-      controller.forward();
-    }
+    useEffect(() {
+      if (doneLoading) {
+        controller.forward();
+      }
+      return null;
+    }, [doneLoading]);
 
     onTap() {
       if (locked) return;
@@ -57,7 +60,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: SizedBox(
                 height: 5,
                 width: 100,

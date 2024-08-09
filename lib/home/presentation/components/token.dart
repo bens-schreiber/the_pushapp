@@ -12,7 +12,7 @@ class TokenBackground extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final verticalController = useAnimationController(
       duration: const Duration(seconds: 2),
-    )..repeat(reverse: true);
+    );
 
     final rotationController = useAnimationController(
       duration: const Duration(seconds: 2),
@@ -32,13 +32,17 @@ class TokenBackground extends HookConsumerWidget {
       CurvedAnimation(parent: rotationController, curve: Curves.decelerate),
     ));
 
-    fadeController.forward();
-    rotationController.forward();
-    rotationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        ref.read(loadingAnimationStateProvider.notifier).state = true;
-      }
-    });
+    useEffect(() {
+      verticalController.repeat(reverse: true);
+      fadeController.forward();
+      rotationController.forward();
+      rotationController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          ref.read(loadingAnimationStateProvider.notifier).state = true;
+        }
+      });
+      return null;
+    }, []);
 
     return BackgroundDesign(
       child: FadeTransition(
