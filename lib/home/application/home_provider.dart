@@ -6,6 +6,7 @@ import "package:the_pushapp/group/data/channel.dart";
 import "package:the_pushapp/notifications/application/notifications_provider.dart";
 import "package:the_pushapp/notifications/data/fcm_stream.dart";
 import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/token/application/token_provider.dart";
 
 /// Initializes root providers.
 final initializeAppProviderAsync = FutureProvider<bool>((ref) async {
@@ -26,16 +27,13 @@ final initializeAppProviderAsync = FutureProvider<bool>((ref) async {
   return true;
 });
 
-/// Signals when the loading animation is complete.
-final loadingAnimationStateProvider = StateProvider<bool>((ref) => false);
-
 /// True if the sliding bottom sheet should be locked.
 final lockSlidingBottomSheetProvider = Provider((ref) {
   final initFinishedAsync = ref.watch(initializeAppProviderAsync);
-  final loadingAnimation = ref.watch(loadingAnimationStateProvider);
+  final loadingAnimation = ref.watch(tokenLoadingAnimationStateProvider);
   final group = ref.watch(groupProvider);
 
   return initFinishedAsync.value != true ||
-      loadingAnimation == false ||
+      loadingAnimation == true ||
       group == null;
 });

@@ -37,6 +37,8 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
         await client
             .from("Users")
             .update({"fcm": fcm}).eq("id", client.auth.currentUser!.id);
+
+        client.auth.startAutoRefresh();
       }
     } catch (_) {}
   }
@@ -47,6 +49,7 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
       await prefs.remove("session");
     } else {
       if (client.auth.currentSession == null) return;
+      client.auth.startAutoRefresh();
       await prefs.setString("session", client.auth.currentSession!.toString());
     }
   });

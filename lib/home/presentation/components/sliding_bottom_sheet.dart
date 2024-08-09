@@ -1,23 +1,23 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
-import "package:the_pushapp/home/application/home_provider.dart";
 
 class SlidingBottomSheet extends HookConsumerWidget {
   final Widget minimizedChild;
   final Widget expandedChild;
+  final bool locked;
+  final bool finishedLoading;
+  final bool isInGroup;
   const SlidingBottomSheet(
-      {super.key, required this.minimizedChild, required this.expandedChild});
+      {super.key,
+      required this.minimizedChild,
+      required this.expandedChild,
+      required this.locked,
+      required this.finishedLoading,
+      required this.isInGroup});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final group = ref.watch(groupProvider);
-    final doneLoading = ref.watch(loadingAnimationStateProvider);
-
-    // In the locked state, we will ignore gestures.
-    final locked = ref.watch(lockSlidingBottomSheetProvider);
-
     final controller = useAnimationController(
       duration: const Duration(milliseconds: 150),
     );
@@ -29,11 +29,11 @@ class SlidingBottomSheet extends HookConsumerWidget {
     // After finishing loading, open this menu open if the user is not in a group, which subsequently
     // means if they have no account and haven't been authenticated.
     useEffect(() {
-      if (doneLoading && group == null) {
+      if (finishedLoading && !isInGroup) {
         controller.forward();
       }
       return null;
-    }, [doneLoading, group]);
+    }, [locked, finishedLoading]);
 
     return SizedBox(
       height: 150 + animation,

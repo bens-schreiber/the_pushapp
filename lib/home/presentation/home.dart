@@ -1,16 +1,30 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/presentation/signout_button.dart";
+import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/home/application/home_provider.dart";
 import "package:the_pushapp/home/presentation/actions.dart";
 import "package:the_pushapp/home/presentation/components/bminschreib.dart";
-import "package:the_pushapp/home/presentation/components/token.dart";
+import "package:the_pushapp/token/application/token_provider.dart";
+import "package:the_pushapp/token/presentation/token.dart";
 import "package:the_pushapp/home/presentation/components/sliding_bottom_sheet.dart";
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final logo = Container(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lockSlidingBottomSheet = ref.watch(lockSlidingBottomSheetProvider);
+    final finishedLoading = !ref.watch(tokenLoadingAnimationStateProvider);
+
+    final group = ref.watch(groupProvider);
+    final inGroup = group != null;
+    final inActiveGroup = group?.isActive == true;
+    final isAuth = ref.watch(isAuthenticatedProvider);
+    final isTokenHolder = ref.watch(isTokenHolderProvider);
+
+    final logoPlaceholder = Container(
       width: 225.0,
       height: 225.0,
       decoration: BoxDecoration(
@@ -19,14 +33,15 @@ class HomeScreen extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).buttonTheme.colorScheme!.shadow,
-            blurRadius: 8.0,
-            spreadRadius: 8.0,
+            blurRadius: 10,
+            spreadRadius: 0.05,
           ),
         ],
       ),
     );
 
     final settingsButton = PopupMenuButton(
+        enabled: isAuth,
         offset: const Offset(0, 50),
         icon: const Icon(Icons.settings, size: 30),
         itemBuilder: (menuContext) {
@@ -42,34 +57,34 @@ class HomeScreen extends StatelessWidget {
           ];
         });
 
+    final sheet = SlidingBottomSheet(
+      isInGroup: inGroup,
+      finishedLoading: finishedLoading,
+      locked: lockSlidingBottomSheet,
+      minimizedChild: const SizedBox.shrink(),
+      expandedChild: const ActionsDisplay(),
+    );
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        toolbarHeight: 40,
-        backgroundColor: Colors.transparent,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
+      bottomSheet: sheet,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 45,
+            right: 5,
             child: settingsButton,
           ),
-        ],
-      ),
-      bottomSheet: const SlidingBottomSheet(
-        minimizedChild: SizedBox.shrink(),
-        expandedChild: ActionsDisplay(),
-      ),
-      body: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 150),
-          child: SizedBox(
+          SizedBox(
             height: double.infinity,
             width: double.infinity,
             child: TokenBackground(
-              child: logo,
+              isInGroup: inGroup,
+              isActiveGroup: inActiveGroup,
+              isTokenHolder: isTokenHolder,
+              child: logoPlaceholder,
             ),
           ),
-        ),
+        ],
       ),
     );
   }

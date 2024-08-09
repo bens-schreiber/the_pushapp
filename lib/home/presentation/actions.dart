@@ -20,7 +20,6 @@ class ActionsDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RequireNotifications(
         child: Loader(
-          hide: true,
           loaders: [
             isAuthenticatedProviderAsync,
             accountProviderAsync,
