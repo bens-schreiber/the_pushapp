@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/util.dart";
 
@@ -22,7 +21,7 @@ class SignoutButton extends ConsumerWidget {
       await client.auth.signOut();
       await client.from("Users").update({"fcm": null}).eq("id", id);
 
-      ref.invalidate(accountProviderAsync);
+      ref.invalidate(clientProvider);
       onTap();
     }
 

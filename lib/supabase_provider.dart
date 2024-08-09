@@ -46,6 +46,7 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   // Listen to auth state changes and persist the session
   _authSubscription = client.auth.onAuthStateChange.listen((state) async {
     if (state.event == AuthChangeEvent.signedOut) {
+      client.auth.stopAutoRefresh();
       await prefs.remove("session");
     } else {
       if (client.auth.currentSession == null) return;
