@@ -7,7 +7,8 @@ import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/group/presentation/activate_group_button.dart";
 import "package:the_pushapp/group/presentation/create_group_button.dart";
 import "package:the_pushapp/group/presentation/delete_group_button.dart";
-import "package:the_pushapp/group/presentation/join_group_form.dart";
+import "package:the_pushapp/group/presentation/display_group_members.dart";
+import "package:the_pushapp/group/presentation/group_code_button.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/common.dart";
@@ -51,16 +52,28 @@ class _ActionsDisplay extends ConsumerWidget {
         if (!isAuthenticated) const LoginForm(),
 
         // Account
-        if (account == null && isAuthenticated) const AccountForm(),
-        if (account != null) AsyncValueDisplay(data: accountProviderAsync),
-        const SizedBox(height: 20),
+        if (account == null && isAuthenticated) ...[
+          const AccountForm(),
+          const SizedBox(height: 20),
+        ],
 
         // Groups
         if (group == null && account != null) ...[
+          Text("Find your friends!",
+              style: Theme.of(context).textTheme.headlineLarge),
+          Text("Accept an invite or create a group to get started.",
+              style: Theme.of(context).textTheme.bodyLarge),
+          const SizedBox(height: 25),
           const CreateGroupButton(),
-          const JoinGroupForm()
         ],
-        if (group != null) AsyncValueDisplay(data: groupProviderAsync),
+        if (group != null) ...[
+          const CopyGroupCodeButton(),
+          const SizedBox(
+            height: 100,
+            child: GroupMembers(),
+          ),
+        ],
+
         if (isGroupAdmin) ...[
           DeleteGroupButton(groupId: group.id),
           if (!group.isActive) ActivateGroupButton(groupId: group.id)

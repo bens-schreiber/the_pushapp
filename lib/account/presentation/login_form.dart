@@ -87,9 +87,8 @@ class LoginForm extends HookConsumerWidget {
           Text("Enter your email to begin.",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: 25)
         ],
-
-        const SizedBox(height: 25),
 
         // Form
         SizedBox(

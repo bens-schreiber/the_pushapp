@@ -1,19 +1,15 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:the_pushapp/account/presentation/signout_button.dart";
-import "package:the_pushapp/home/application/home_provider.dart";
 import "package:the_pushapp/home/presentation/actions.dart";
 import "package:the_pushapp/home/presentation/components/bminschreib.dart";
 import "package:the_pushapp/home/presentation/components/token.dart";
 import "package:the_pushapp/home/presentation/components/sliding_bottom_sheet.dart";
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final _ = ref.watch(lockSlidingBottomSheetProvider);
-
+  Widget build(BuildContext context) {
     final logo = Container(
       width: 225.0,
       height: 225.0,
@@ -33,17 +29,24 @@ class HomeScreen extends ConsumerWidget {
     final settingsButton = PopupMenuButton(
         offset: const Offset(0, 50),
         icon: const Icon(Icons.settings, size: 30),
-        itemBuilder: (context) {
+        itemBuilder: (menuContext) {
           return [
-            const PopupMenuItem(
-              child: SignoutButton(),
+            PopupMenuItem(
+              child: SignoutButton(onTap: () {
+                Navigator.of(menuContext).pop();
+              }),
             ),
-            const PopupMenuItem(child: HelpButton())
+            PopupMenuItem(child: HelpButton(onTap: () {
+              Navigator.of(menuContext).pop();
+            })),
           ];
         });
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        toolbarHeight: 40,
+        backgroundColor: Colors.transparent,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),

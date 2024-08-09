@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/home/application/home_provider.dart";
 
 class SlidingBottomSheet extends HookConsumerWidget {
@@ -11,7 +12,10 @@ class SlidingBottomSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final group = ref.watch(groupProvider);
     final doneLoading = ref.watch(loadingAnimationStateProvider);
+
+    // In the locked state, we will ignore gestures.
     final locked = ref.watch(lockSlidingBottomSheetProvider);
 
     final controller = useAnimationController(
@@ -22,13 +26,41 @@ class SlidingBottomSheet extends HookConsumerWidget {
       Tween<double>(begin: 0, end: 300).animate(controller),
     );
 
+    // After finishing loading, open this menu open if the user is not in a group, which subsequently
+    // means if they have no account and haven't been authenticated.
     useEffect(() {
-      if (doneLoading) {
+      if (doneLoading && group == null) {
         controller.forward();
       }
       return null;
-    }, [doneLoading]);
+    }, [doneLoading, group]);
 
+    return SizedBox(
+      height: 150 + animation,
+      width: double.infinity,
+      child: _SlidingSheet(
+        minimizedChild: minimizedChild,
+        expandedChild: expandedChild,
+        locked: locked,
+        controller: controller,
+      ),
+    );
+  }
+}
+
+class _SlidingSheet extends StatelessWidget {
+  final Widget minimizedChild;
+  final Widget expandedChild;
+  final bool locked;
+  final AnimationController controller;
+  const _SlidingSheet(
+      {required this.minimizedChild,
+      required this.expandedChild,
+      required this.locked,
+      required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
     onTap() {
       if (locked) return;
       if (controller.isAnimating) return;
@@ -63,7 +95,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
               padding: const EdgeInsets.all(4.0),
               child: SizedBox(
                 height: 5,
-                width: 100,
+                width: 200,
                 child: Container(
                   decoration: ShapeDecoration(
                     color: Theme.of(context).primaryColorLight,
@@ -79,7 +111,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
       ),
     );
 
-    sheet() => Card(
+    return Card(
         elevation: 10,
         child: Align(
           alignment: Alignment.topCenter,
@@ -91,11 +123,5 @@ class SlidingBottomSheet extends HookConsumerWidget {
             ],
           ),
         ));
-
-    return SizedBox(
-      height: 150 + animation,
-      width: double.infinity,
-      child: sheet(),
-    );
   }
 }

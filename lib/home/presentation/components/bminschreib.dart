@@ -3,7 +3,8 @@ import "package:the_pushapp/util.dart";
 import "package:url_launcher/url_launcher.dart";
 
 class HelpButton extends StatelessWidget {
-  const HelpButton({super.key});
+  final Function onTap;
+  const HelpButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,7 @@ class HelpButton extends StatelessWidget {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
       }
+      onTap();
     }
 
     return ListTile(

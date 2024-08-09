@@ -1,12 +1,13 @@
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/data/channel.dart";
 import "package:the_pushapp/account/data/deep_link.dart";
+import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/group/data/channel.dart";
 import "package:the_pushapp/notifications/application/notifications_provider.dart";
 import "package:the_pushapp/notifications/data/fcm_stream.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
+/// Initializes root providers.
 final initializeAppProviderAsync = FutureProvider<bool>((ref) async {
   // Supabase
   await ref.read(clientProviderAsync.future);
@@ -28,12 +29,13 @@ final initializeAppProviderAsync = FutureProvider<bool>((ref) async {
 /// Signals when the loading animation is complete.
 final loadingAnimationStateProvider = StateProvider<bool>((ref) => false);
 
+/// True if the sliding bottom sheet should be locked.
 final lockSlidingBottomSheetProvider = Provider((ref) {
   final initFinishedAsync = ref.watch(initializeAppProviderAsync);
   final loadingAnimation = ref.watch(loadingAnimationStateProvider);
-  final isAuth = ref.watch(isAuthenticatedProvider);
+  final group = ref.watch(groupProvider);
 
-  return initFinishedAsync.value == true &&
-      loadingAnimation == false &&
-      isAuth == true;
+  return initFinishedAsync.value != true ||
+      loadingAnimation == false ||
+      group == null;
 });
