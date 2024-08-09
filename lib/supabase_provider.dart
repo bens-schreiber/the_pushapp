@@ -28,7 +28,7 @@ final clientProviderAsync = FutureProvider<SupabaseClient>((ref) async {
   if (session != null) {
     try {
       final recoveredSession =
-          (await client.auth.setSession(session)).session != null;
+          (await client.auth.recoverSession(session)).session != null;
 
       if (recoveredSession) {
         final fcm = await ref.read(fcmTokenProviderAsync.future);

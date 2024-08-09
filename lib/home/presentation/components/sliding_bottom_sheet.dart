@@ -1,51 +1,45 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:the_pushapp/home/application/home_provider.dart";
 
-class SlidingBottomSheet extends ConsumerStatefulWidget {
+class SlidingBottomSheet extends HookConsumerWidget {
   final Widget minimizedChild;
   final Widget expandedChild;
   const SlidingBottomSheet(
       {super.key, required this.minimizedChild, required this.expandedChild});
 
   @override
-  ConsumerState<SlidingBottomSheet> createState() => _SlidingBottomSheetState();
-}
-
-class _SlidingBottomSheetState extends ConsumerState<SlidingBottomSheet>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-    _animation = Tween<double>(begin: 0, end: 300).animate(_controller);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final doneLoading = ref.watch(loadingAnimationStateProvider);
+    final locked = ref.watch(lockSlidingBottomSheetProvider);
+
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 150),
+    );
+
+    final animation = useAnimation(
+      Tween<double>(begin: 0, end: 300).animate(controller),
+    );
+
     if (doneLoading) {
-      _controller.forward();
+      controller.forward();
     }
 
     onTap() {
-      if (_controller.isAnimating) return;
-      _controller.isCompleted ? _controller.reverse() : _controller.forward();
+      if (locked) return;
+      if (controller.isAnimating) return;
+      !controller.isCompleted ? controller.reverse() : controller.forward();
     }
 
     onPanUpdate(details) {
-      if (_controller.isAnimating) return;
-      if (details.delta.dy > 0 && _controller.isCompleted) {
-        _controller.reverse();
+      if (locked) return;
+      if (controller.isAnimating) return;
+      if (details.delta.dy > 0 && controller.isCompleted) {
+        controller.reverse();
       }
-      if (details.delta.dy < 0 && !_controller.isCompleted) {
-        _controller.forward();
+      if (details.delta.dy < 0 && !controller.isCompleted) {
+        controller.forward();
       }
     }
 
@@ -83,33 +77,22 @@ class _SlidingBottomSheetState extends ConsumerState<SlidingBottomSheet>
     );
 
     sheet() => Card(
-        color: Theme.of(context).cardTheme.color,
+        elevation: 10,
         child: Align(
           alignment: Alignment.topCenter,
           child: Column(
             children: [
               gestureBar,
-              if (!_controller.isAnimating)
-                _controller.isCompleted
-                    ? widget.expandedChild
-                    : widget.minimizedChild,
+              if (!controller.isAnimating)
+                controller.isCompleted ? expandedChild : minimizedChild,
             ],
           ),
         ));
 
-    return AnimatedBuilder(
-        animation: _animation,
-        builder: (context, child) {
-          return SizedBox(
-              height: 150 + _animation.value,
-              width: double.infinity,
-              child: sheet());
-        });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    return SizedBox(
+      height: 150 + animation,
+      width: double.infinity,
+      child: sheet(),
+    );
   }
 }

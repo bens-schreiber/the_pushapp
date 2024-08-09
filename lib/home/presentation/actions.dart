@@ -3,7 +3,6 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/presentation/account_form.dart";
 import "package:the_pushapp/account/presentation/login_form.dart";
-import "package:the_pushapp/account/presentation/signout_button.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/group/presentation/activate_group_button.dart";
 import "package:the_pushapp/group/presentation/create_group_button.dart";
@@ -20,6 +19,7 @@ class ActionsDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) => RequireNotifications(
         child: Loader(
+          hide: true,
           loaders: [
             isAuthenticatedProviderAsync,
             accountProviderAsync,
@@ -69,9 +69,6 @@ class _ActionsDisplay extends ConsumerWidget {
         // Token
         if (isTokenHolder)
           IncrementTokenButton(client: client, token: group.token),
-
-        // Logout
-        if (isAuthenticated) const SignoutButton()
       ],
     );
   }

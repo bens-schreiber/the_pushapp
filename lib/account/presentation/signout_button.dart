@@ -24,7 +24,9 @@ class SignoutButton extends ConsumerWidget {
     }
 
     return ListTile(
-      onTap: () => useErrorHandle(signOut, context),
+      onTap: () {
+        useErrorHandle(signOut, context);
+      },
       dense: true,
       leading: const Icon(Icons.logout, size: 25),
       title: Text("Sign Out", style: Theme.of(context).textTheme.bodyLarge),

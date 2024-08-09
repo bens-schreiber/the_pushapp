@@ -1,34 +1,30 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/common.dart";
 import "package:the_pushapp/notifications/application/notifications_provider.dart";
 import "package:the_pushapp/supabase_provider.dart";
 
-class AccountForm extends ConsumerStatefulWidget {
+class AccountForm extends HookConsumerWidget {
   const AccountForm({super.key});
 
   @override
-  ConsumerState<AccountForm> createState() => _AccountFormState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final firstNameController = useTextEditingController();
+    final lastNameController = useTextEditingController();
 
-class _AccountFormState extends ConsumerState<AccountForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    validate() => _formKey.currentState?.validate() == true;
+    validate() => formKey.currentState?.validate() == true;
 
     createAccount() async {
       if (!validate()) return;
-      final firstName = _firstNameController.text;
-      final lastName = _lastNameController.text;
+      final firstName = firstNameController.text;
+      final lastName = lastNameController.text;
 
       final client = ref.read(clientProvider);
       final fcm = await ref.read(fcmTokenProviderAsync.future);
-      await await client
+      await client
           .from("Users")
           .insert({"first_name": firstName, "last_name": lastName, "fcm": fcm});
 
@@ -37,12 +33,12 @@ class _AccountFormState extends ConsumerState<AccountForm> {
 
     return Card(
       child: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           children: [
             TextFormField(
               decoration: const InputDecoration(labelText: "First name"),
-              controller: _firstNameController,
+              controller: firstNameController,
               validator: (value) {
                 if (value?.isEmpty == true) {
                   return "Please enter your first name";
@@ -52,7 +48,7 @@ class _AccountFormState extends ConsumerState<AccountForm> {
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: "Last name"),
-              controller: _lastNameController,
+              controller: lastNameController,
               validator: (value) {
                 if (value?.isEmpty == true) {
                   return "Please enter your last name";

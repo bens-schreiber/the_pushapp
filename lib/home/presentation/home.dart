@@ -12,10 +12,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final animationComplete = ref.watch(loadingAnimationStateProvider);
-    final loadingAsync = ref.watch(loadingScreenProviderAsync);
-
-    final sheetEnabled = animationComplete && loadingAsync.value == true;
+    final _ = ref.watch(lockSlidingBottomSheetProvider);
 
     final logo = Container(
       width: 225.0,
@@ -54,12 +51,9 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      bottomSheet: IgnorePointer(
-        ignoring: !sheetEnabled,
-        child: const SlidingBottomSheet(
-          minimizedChild: SizedBox.shrink(),
-          expandedChild: ActionsDisplay(),
-        ),
+      bottomSheet: const SlidingBottomSheet(
+        minimizedChild: SizedBox.shrink(),
+        expandedChild: ActionsDisplay(),
       ),
       body: SafeArea(
         bottom: false,

@@ -5,7 +5,8 @@ import "package:the_pushapp/notifications/application/notifications_provider.dar
 
 class RequireNotifications extends ConsumerWidget {
   final Widget child;
-  const RequireNotifications({required this.child, super.key});
+  final bool hide;
+  const RequireNotifications({required this.child, this.hide = false, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
