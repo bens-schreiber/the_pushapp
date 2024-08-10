@@ -14,6 +14,7 @@ class AccountForm extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final firstNameController = useTextEditingController();
     final lastNameController = useTextEditingController();
+    final accountFuture = useState<Future<void>?>(null);
 
     validate() => formKey.currentState?.validate() == true;
 
@@ -24,9 +25,17 @@ class AccountForm extends HookConsumerWidget {
 
       final client = ref.read(clientProvider);
       final fcm = await ref.read(fcmTokenProviderAsync.future);
-      await client
-          .from("Users")
-          .insert({"first_name": firstName, "last_name": lastName, "fcm": fcm});
+
+      await FutureLoader.use(
+        client.from("Users").insert(
+          {
+            "first_name": firstName,
+            "last_name": lastName,
+            "fcm": fcm,
+          },
+        ),
+        accountFuture,
+      );
 
       ref.invalidate(accountProviderAsync);
     }
@@ -66,6 +75,10 @@ class AccountForm extends HookConsumerWidget {
               onPressed: createAccount,
               child: const Text("Create account"),
             ),
+            const SizedBox(height: 10),
+
+            // Loading
+            FutureLoader(loaders: [accountFuture.value]),
           ],
         ),
       ),

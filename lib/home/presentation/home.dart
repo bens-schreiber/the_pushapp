@@ -48,10 +48,12 @@ class HomeScreen extends ConsumerWidget {
           return [
             PopupMenuItem(
               child: SignoutButton(onTap: () {
+                if (!menuContext.mounted) return;
                 Navigator.of(menuContext).pop();
               }),
             ),
             PopupMenuItem(child: HelpButton(onTap: () {
+              if (!menuContext.mounted) return;
               Navigator.of(menuContext).pop();
             })),
           ];
@@ -66,7 +68,9 @@ class HomeScreen extends ConsumerWidget {
     );
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text("The Push App"),
         actions: [
           if (isAuth) settingsButton,

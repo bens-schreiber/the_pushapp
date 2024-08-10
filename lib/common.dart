@@ -29,13 +29,56 @@ class AsyncValueDisplay extends ConsumerWidget {
 }
 
 /// Shows a loading widget while the loaders are loading
-class Loader extends HookConsumerWidget {
+/// Once all loaders are done loading, [SizedBox.shrink()] is displayed
+class FutureLoader extends StatelessWidget {
+  final List<Future<Object?>?> loaders;
+  final Widget onLoading;
+  const FutureLoader(
+      {required this.loaders,
+      this.onLoading = const LinearProgressIndicator(),
+      super.key});
+
+  /// Assign the future to a notifier and await it
+  /// [flickerDelay] will add a delay to the loading time to prevent the bar flickering
+  static Future<T> use<T>(Future<T> future, ValueNotifier<Future<T>?> notifier,
+      {bool flickerDelay = true}) async {
+    notifier.value = () async {
+      final time = DateTime.now();
+      await future;
+      final diff = DateTime.now().difference(time).inMilliseconds;
+      if (flickerDelay && diff < 500) {
+        await Future.delayed(Duration(milliseconds: 500 - diff));
+      }
+      return future;
+    }();
+    await notifier.value;
+    return future;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final futures = loaders.map((l) => l ?? Future.value(null)).toList();
+    return FutureBuilder(
+        future: Future.wait(futures),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const SizedBox.shrink();
+          }
+
+          return onLoading;
+        });
+  }
+}
+
+/// Shows a loading widget while the loaders are loading.
+/// Once all loaders are done loading, [child] is displayed.
+class IfLoader extends HookConsumerWidget {
   final Widget child;
   final Widget onLoading;
   final List<ProviderBase<AsyncValue<Object?>>> loaders;
   final bool loadOnce;
   final bool hide;
-  const Loader(
+  const IfLoader(
       {required this.child,
       required this.loaders,
       this.onLoading = const LinearProgressIndicator(),

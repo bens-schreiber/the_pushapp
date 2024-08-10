@@ -12,6 +12,7 @@ class LoginForm extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final emailController = useTextEditingController();
     final sentOtp = useState(false);
+    final loginFuture = useState<Future<void>?>(null);
 
     validate() => formKey.currentState?.validate() == true;
 
@@ -21,9 +22,12 @@ class LoginForm extends HookConsumerWidget {
       final client = ref.read(clientProvider);
 
       // // On success this will stream an auth event handled by [isAuthenticatedProviderAsync]
-      await client.auth.signInWithOtp(
-          email: email,
-          emailRedirectTo: "io.supabase.pushapp://login-callback/");
+      await FutureLoader.use(
+        client.auth.signInWithOtp(
+            email: email,
+            emailRedirectTo: "io.supabase.pushapp://login-callback/"),
+        loginFuture,
+      );
 
       sentOtp.value = true;
     }
@@ -49,7 +53,9 @@ class LoginForm extends HookConsumerWidget {
               },
             ),
           ),
+
           const SizedBox(height: 20),
+
           HandleButton(
             onPressed: login,
             child: Text(
@@ -58,6 +64,11 @@ class LoginForm extends HookConsumerWidget {
                   fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize),
             ),
           ),
+
+          const SizedBox(height: 10),
+
+          // Loading
+          FutureLoader(loaders: [loginFuture.value]),
         ],
       ),
     );
@@ -87,15 +98,15 @@ class LoginForm extends HookConsumerWidget {
           Text("Enter your email to begin.",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 25)
+          const SizedBox(height: 25),
         ],
 
         // Form
         SizedBox(
           width: double.infinity,
-          height: 200,
+          height: 215,
           child: sentOtp.value ? codeSent : form,
-        )
+        ),
       ],
     );
   }
