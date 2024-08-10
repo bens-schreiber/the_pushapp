@@ -7,14 +7,15 @@ class SlidingBottomSheet extends HookConsumerWidget {
   final Widget expandedChild;
   final bool locked;
   final bool finishedLoading;
-  final bool isInGroup;
-  const SlidingBottomSheet(
-      {super.key,
-      required this.minimizedChild,
-      required this.expandedChild,
-      required this.locked,
-      required this.finishedLoading,
-      required this.isInGroup});
+  final bool isInActiveGroup;
+  const SlidingBottomSheet({
+    super.key,
+    required this.minimizedChild,
+    required this.expandedChild,
+    required this.locked,
+    required this.finishedLoading,
+    required this.isInActiveGroup,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,11 +30,15 @@ class SlidingBottomSheet extends HookConsumerWidget {
     // After finishing loading, open this menu open if the user is not in a group, which subsequently
     // means if they have no account and haven't been authenticated.
     useEffect(() {
-      if (finishedLoading && !isInGroup) {
+      if (finishedLoading) {
         controller.forward();
       }
+      if (isInActiveGroup) {
+        controller.reverse();
+      }
+
       return null;
-    }, [locked, finishedLoading]);
+    }, [locked, finishedLoading, isInActiveGroup]);
 
     return SizedBox(
       height: 150 + animation,

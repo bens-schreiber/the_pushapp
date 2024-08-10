@@ -17,8 +17,8 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final lockSlidingBottomSheet = ref.watch(lockSlidingBottomSheetProvider);
     final finishedLoading = !ref.watch(tokenLoadingAnimationStateProvider);
-
     final group = ref.watch(groupProvider);
+
     final inGroup = group != null;
     final inActiveGroup = group?.isActive == true;
     final isAuth = ref.watch(isAuthenticatedProvider);
@@ -60,8 +60,8 @@ class HomeScreen extends ConsumerWidget {
         });
 
     final sheet = SlidingBottomSheet(
-      isInGroup: inGroup,
       finishedLoading: finishedLoading,
+      isInActiveGroup: inActiveGroup,
       locked: lockSlidingBottomSheet,
       minimizedChild: const SizedBox.shrink(),
       expandedChild: const ActionsDisplay(),
