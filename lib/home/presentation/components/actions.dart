@@ -19,7 +19,7 @@ class ActionsDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => RequireNotifications(
-        child: IfLoader(
+        child: Loader(
           loaders: [
             isAuthenticatedProviderAsync,
             accountProviderAsync,
@@ -37,10 +37,10 @@ class _ActionsDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final client = ref.read(clientProvider);
-    final isAuthenticated = ref.watch(isAuthenticatedProvider);
     final account = ref.watch(accountProvider);
     final group = ref.watch(groupProvider);
+    final isAuthenticated = ref.read(isAuthenticatedProvider);
+    final client = ref.read(clientProvider);
 
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
     final isTokenHolder = group != null && group.tokenUserId == account?.id;

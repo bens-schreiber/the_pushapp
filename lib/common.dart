@@ -57,7 +57,13 @@ class FutureLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final futures = loaders.map((l) => l ?? Future.value(null)).toList();
+    loaders.removeWhere((loader) => loader == null);
+    if (loaders.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final futures = loaders.map((loader) => loader!).toList();
+
     return FutureBuilder(
         future: Future.wait(futures),
         builder: (context, snapshot) {
@@ -72,13 +78,13 @@ class FutureLoader extends StatelessWidget {
 
 /// Shows a loading widget while the loaders are loading.
 /// Once all loaders are done loading, [child] is displayed.
-class IfLoader extends HookConsumerWidget {
+class Loader extends HookConsumerWidget {
   final Widget child;
   final Widget onLoading;
   final List<ProviderBase<AsyncValue<Object?>>> loaders;
   final bool loadOnce;
   final bool hide;
-  const IfLoader(
+  const Loader(
       {required this.child,
       required this.loaders,
       this.onLoading = const LinearProgressIndicator(),
