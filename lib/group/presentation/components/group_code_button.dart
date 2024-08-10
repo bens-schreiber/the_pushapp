@@ -23,7 +23,8 @@ class CopyGroupCodeButton extends ConsumerWidget {
       onTap: copyClipboard,
       dense: true,
       leading: const Icon(Icons.copy, size: 25),
-      title: const Text("Copy Group Code", style: TextStyle(fontSize: 16)),
+      title: const Text("Invitation"),
+      subtitle: const Text("Copy invitation"),
     );
   }
 }

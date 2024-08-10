@@ -77,12 +77,9 @@ class TokenBackground extends HookConsumerWidget {
           ),
         ));
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 100), // TOOD: logo size
-      child: AnimatedBackgroundDesign(
-          animate: isActiveGroup || isTokenHolder,
-          background: isTokenHolder,
-          child: token),
-    );
+    return AnimatedBackgroundDesign(
+        animate: isActiveGroup || isTokenHolder,
+        background: isTokenHolder,
+        child: token);
   }
 }

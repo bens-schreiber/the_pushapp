@@ -6,6 +6,7 @@ import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/home/application/home_provider.dart";
 import "package:the_pushapp/home/presentation/actions.dart";
 import "package:the_pushapp/home/presentation/components/bminschreib.dart";
+import "package:the_pushapp/home/presentation/components/info_display.dart";
 import "package:the_pushapp/token/application/token_provider.dart";
 import "package:the_pushapp/token/presentation/token.dart";
 import "package:the_pushapp/home/presentation/components/sliding_bottom_sheet.dart";
@@ -63,28 +64,31 @@ class HomeScreen extends ConsumerWidget {
       finishedLoading: finishedLoading,
       isInActiveGroup: inActiveGroup,
       locked: lockSlidingBottomSheet,
-      minimizedChild: const SizedBox.shrink(),
+      minimizedChild: const InfoDisplay(),
       expandedChild: const ActionsDisplay(),
     );
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text("The Push App"),
-        actions: [
-          if (isAuth) settingsButton,
-        ],
-      ),
-      bottomSheet: sheet,
-      body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        child: TokenBackground(
-          isInGroup: inGroup,
-          isActiveGroup: inActiveGroup,
-          isTokenHolder: isTokenHolder,
-          child: logoPlaceholder,
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const Text("The Push App"),
+          actions: [
+            if (isAuth) settingsButton,
+          ],
+        ),
+        bottomSheet: sheet,
+        body: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: TokenBackground(
+            isInGroup: inGroup,
+            isActiveGroup: inActiveGroup,
+            isTokenHolder: isTokenHolder,
+            child: logoPlaceholder,
+          ),
         ),
       ),
     );

@@ -41,7 +41,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
     }, [locked, finishedLoading, isInActiveGroup]);
 
     return SizedBox(
-      height: 150 + animation,
+      height: 200 + animation,
       width: double.infinity,
       child: _SlidingSheet(
         minimizedChild: minimizedChild,
