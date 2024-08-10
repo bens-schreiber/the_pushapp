@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/token/application/token_provider.dart";
 
 class InfoDisplay extends ConsumerWidget {
   const InfoDisplay({super.key});
@@ -10,9 +11,11 @@ class InfoDisplay extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final account = ref.watch(accountProvider);
     final group = ref.watch(groupProvider);
-    final groupMembers = ref.read(groupMembersProvider);
-    if (account == null || group == null) {
-      return const SizedBox.shrink();
+    final groupMembers = ref.watch(groupMembersProvider);
+    final isLoading = ref.watch(tokenLoadingAnimationStateProvider);
+    if (account == null || group == null || isLoading) {
+      return const Padding(
+          padding: EdgeInsets.all(8), child: LinearProgressIndicator());
     }
 
     final admin =

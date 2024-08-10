@@ -10,7 +10,6 @@ import "package:the_pushapp/group/presentation/delete_group_form.dart";
 import "package:the_pushapp/group/presentation/display_group_members.dart";
 import "package:the_pushapp/group/presentation/components/group_code_button.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
-import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/common.dart";
 import "package:the_pushapp/token/presentation/increment_token_button.dart";
 
@@ -39,8 +38,7 @@ class _ActionsDisplay extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final account = ref.watch(accountProvider);
     final group = ref.watch(groupProvider);
-    final isAuthenticated = ref.read(isAuthenticatedProvider);
-    final client = ref.read(clientProvider);
+    final isAuthenticated = ref.watch(isAuthenticatedProvider);
 
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
     final isTokenHolder = group != null && group.tokenUserId == account?.id;
@@ -72,8 +70,7 @@ class _ActionsDisplay extends ConsumerWidget {
         ],
 
         // Token
-        if (isTokenHolder)
-          IncrementTokenButton(client: client, token: group.token),
+        if (isTokenHolder) const IncrementTokenButton()
       ],
     );
   }

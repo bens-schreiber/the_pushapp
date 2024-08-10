@@ -33,8 +33,8 @@ final isAuthenticatedProvider = Provider<bool>((ref) {
 ///
 /// Invalidated by the [_realtimeChannel] web socket.
 final accountProviderAsync = FutureProvider<Account?>((ref) async {
-  final isLoggedIn = ref.watch(isAuthenticatedProviderAsync);
-  if (isLoggedIn.value != true) return null;
+  final isAuthenticated = ref.watch(isAuthenticatedProviderAsync);
+  if (isAuthenticated.value != true) return null;
 
   final client = ref.read(clientProvider);
   final user = await client

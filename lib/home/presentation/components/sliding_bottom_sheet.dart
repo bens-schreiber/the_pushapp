@@ -24,7 +24,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
     );
 
     final animation = useAnimation(
-      Tween<double>(begin: 0, end: 300).animate(controller),
+      Tween<double>(begin: 0, end: 200).animate(controller),
     );
 
     // After finishing loading, open this menu open if the user is not in a group, which subsequently
@@ -122,7 +122,7 @@ class _SlidingSheet extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              gestureBar,
+              if (locked) const SizedBox(height: 50) else gestureBar,
               if (!controller.isAnimating)
                 controller.isCompleted ? expandedChild : minimizedChild,
             ],
