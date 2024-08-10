@@ -4,9 +4,9 @@ import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/presentation/account_form.dart";
 import "package:the_pushapp/account/presentation/login_form.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
-import "package:the_pushapp/group/presentation/components/activate_group_button.dart";
-import "package:the_pushapp/group/presentation/components/delete_group_button.dart";
+import "package:the_pushapp/group/presentation/activate_group_form.dart";
 import "package:the_pushapp/group/presentation/create_group_form.dart";
+import "package:the_pushapp/group/presentation/delete_group_form.dart";
 import "package:the_pushapp/group/presentation/display_group_members.dart";
 import "package:the_pushapp/group/presentation/components/group_code_button.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
@@ -67,8 +67,8 @@ class _ActionsDisplay extends ConsumerWidget {
         ],
 
         if (isGroupAdmin) ...[
-          DeleteGroupButton(groupId: group.id),
-          if (!group.isActive) ActivateGroupButton(groupId: group.id)
+          const DeleteGroupForm(),
+          if (!group.isActive) const ActivateGroupForm(),
         ],
 
         // Token

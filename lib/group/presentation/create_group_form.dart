@@ -1,15 +1,15 @@
 import "package:flutter/material.dart";
-import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/common.dart";
 import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/util.dart";
 
 class CreateGroupForm extends HookConsumerWidget {
   const CreateGroupForm({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final createGroupFuture = useState<Future<void>?>(null);
+    final createGroupFuture = useFutureLoader();
 
     createGroup() async {
       final client = ref.read(clientProvider);
@@ -17,7 +17,7 @@ class CreateGroupForm extends HookConsumerWidget {
           await client.from("Groups").insert({}) // use default values
               .select("id");
 
-      await FutureLoader.use(
+      await FutureLoader.load(
           client.from("Users").update({
             "group_id": groupId.first["id"],
           }).eq(
@@ -43,7 +43,7 @@ class CreateGroupForm extends HookConsumerWidget {
 
         // Loading
         FutureLoader(
-          loaders: [createGroupFuture.value],
+          loaders: [createGroupFuture],
         ),
       ],
     );

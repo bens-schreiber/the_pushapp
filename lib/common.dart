@@ -31,7 +31,7 @@ class AsyncValueDisplay extends ConsumerWidget {
 /// Shows a loading widget while the loaders are loading
 /// Once all loaders are done loading, [SizedBox.shrink()] is displayed
 class FutureLoader extends StatelessWidget {
-  final List<Future<Object?>?> loaders;
+  final List<ValueNotifier<Future<Object?>?>> loaders;
   final Widget onLoading;
   const FutureLoader(
       {required this.loaders,
@@ -40,7 +40,7 @@ class FutureLoader extends StatelessWidget {
 
   /// Assign the future to a notifier and await it
   /// [flickerDelay] will add a delay to the loading time to prevent the bar flickering
-  static Future<T> use<T>(Future<T> future, ValueNotifier<Future<T>?> notifier,
+  static Future<T> load<T>(Future<T> future, ValueNotifier<Future<T>?> notifier,
       {bool flickerDelay = true}) async {
     notifier.value = () async {
       final time = DateTime.now();
@@ -57,12 +57,12 @@ class FutureLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    loaders.removeWhere((loader) => loader == null);
+    loaders.removeWhere((loader) => loader.value == null);
     if (loaders.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final futures = loaders.map((loader) => loader!).toList();
+    final futures = loaders.map((loader) => loader.value!).toList();
 
     return FutureBuilder(
         future: Future.wait(futures),
@@ -122,7 +122,7 @@ class HandleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    action() => useErrorHandle(onPressed, context);
+    action() => inErrorHandler(onPressed, context);
     return TextButton(
       onPressed: action,
       child: child,

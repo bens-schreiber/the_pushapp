@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 
 void showSnackbar(String text, BuildContext context) {
   if (!context.mounted) return;
@@ -7,7 +8,7 @@ void showSnackbar(String text, BuildContext context) {
   ));
 }
 
-Future<bool> useErrorHandle(Function f, BuildContext context) async {
+Future<bool> inErrorHandler(Function f, BuildContext context) async {
   try {
     await f();
     return true;
@@ -17,3 +18,5 @@ Future<bool> useErrorHandle(Function f, BuildContext context) async {
     return false;
   }
 }
+
+ValueNotifier<Future<T>?> useFutureLoader<T>() => useState<Future<T>?>(null);

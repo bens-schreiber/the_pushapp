@@ -5,6 +5,7 @@ import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/common.dart";
 import "package:the_pushapp/notifications/application/notifications_provider.dart";
 import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/util.dart";
 
 class AccountForm extends HookConsumerWidget {
   const AccountForm({super.key});
@@ -14,7 +15,7 @@ class AccountForm extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final firstNameController = useTextEditingController();
     final lastNameController = useTextEditingController();
-    final accountFuture = useState<Future<void>?>(null);
+    final accountFuture = useFutureLoader();
 
     validate() => formKey.currentState?.validate() == true;
 
@@ -26,7 +27,7 @@ class AccountForm extends HookConsumerWidget {
       final client = ref.read(clientProvider);
       final fcm = await ref.read(fcmTokenProviderAsync.future);
 
-      await FutureLoader.use(
+      await FutureLoader.load(
         client.from("Users").insert(
           {
             "first_name": firstName,
@@ -78,7 +79,7 @@ class AccountForm extends HookConsumerWidget {
             const SizedBox(height: 10),
 
             // Loading
-            FutureLoader(loaders: [accountFuture.value]),
+            FutureLoader(loaders: [accountFuture]),
           ],
         ),
       ),

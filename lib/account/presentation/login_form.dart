@@ -3,6 +3,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:the_pushapp/common.dart";
 import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/util.dart";
 
 class LoginForm extends HookConsumerWidget {
   const LoginForm({super.key});
@@ -12,7 +13,7 @@ class LoginForm extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final emailController = useTextEditingController();
     final sentOtp = useState(false);
-    final loginFuture = useState<Future<void>?>(null);
+    final loginFuture = useFutureLoader();
 
     validate() => formKey.currentState?.validate() == true;
 
@@ -22,7 +23,7 @@ class LoginForm extends HookConsumerWidget {
       final client = ref.read(clientProvider);
 
       // // On success this will stream an auth event handled by [isAuthenticatedProviderAsync]
-      await FutureLoader.use(
+      await FutureLoader.load(
         client.auth.signInWithOtp(
             email: email,
             emailRedirectTo: "io.supabase.pushapp://login-callback/"),
@@ -68,7 +69,7 @@ class LoginForm extends HookConsumerWidget {
           const SizedBox(height: 10),
 
           // Loading
-          FutureLoader(loaders: [loginFuture.value]),
+          FutureLoader(loaders: [loginFuture]),
         ],
       ),
     );

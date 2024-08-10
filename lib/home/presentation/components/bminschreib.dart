@@ -17,7 +17,7 @@ class HelpButton extends StatelessWidget {
     }
 
     return ListTile(
-      onTap: () => useErrorHandle(open, context),
+      onTap: () => inErrorHandler(open, context),
       dense: true,
       leading: const Icon(Icons.question_mark, size: 25),
       title: Text("Help", style: Theme.of(context).textTheme.bodyLarge),

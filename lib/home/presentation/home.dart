@@ -4,7 +4,7 @@ import "package:the_pushapp/account/application/account_provider.dart";
 import "package:the_pushapp/account/presentation/signout_button.dart";
 import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/home/application/home_provider.dart";
-import "package:the_pushapp/home/presentation/components/actions.dart";
+import "package:the_pushapp/home/presentation/actions.dart";
 import "package:the_pushapp/home/presentation/components/bminschreib.dart";
 import "package:the_pushapp/token/application/token_provider.dart";
 import "package:the_pushapp/token/presentation/token.dart";
