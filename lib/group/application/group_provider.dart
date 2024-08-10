@@ -40,10 +40,14 @@ final groupMembersProviderAsync = FutureProvider<List<Account>>((ref) async {
 
   final client = ref.read(clientProvider);
 
-  // supabase read policy will return only us and group members
-  final members = await client.from("Users").select().count(CountOption.exact);
+  try {
+    final members = await client.from("Users").select().count();
+    return members.data.map((e) => Account.fromJson(e)).toList();
+  } catch (e) {
+    return [];
+  }
 
-  return members.data.map((e) => Account.fromJson(e)).toList();
+  // return members.data.map((e) => Account.fromJson(e)).toList();
 });
 
 /// Synchronously read [groupMembersProviderAsync].

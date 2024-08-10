@@ -18,22 +18,13 @@ class TokenBackground extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final verticalController = useAnimationController(
-      duration: const Duration(seconds: 2),
-    );
-
     final rotationController = useAnimationController(
       duration: const Duration(seconds: 2),
     );
 
     final fadeController = useAnimationController(
-      duration: const Duration(milliseconds: 750),
+      duration: const Duration(milliseconds: 500),
     );
-
-    final verticalAnimation =
-        useAnimation(Tween<double>(begin: -10, end: 0).animate(
-      CurvedAnimation(parent: verticalController, curve: Curves.easeInOut),
-    ));
 
     final rotationAnimation =
         useAnimation(Tween<double>(begin: 0, end: 5 * 3.14).animate(
@@ -42,13 +33,6 @@ class TokenBackground extends HookConsumerWidget {
 
     useEffect(() {
       fadeController.forward();
-
-      // Vertical effect only when not in the active group
-      if (!isInGroup) {
-        verticalController.repeat(reverse: true);
-      } else {
-        verticalController.reset();
-      }
 
       // On a new active group, reset so we can animate again
       if (isInGroup && isActiveGroup) {
@@ -68,13 +52,10 @@ class TokenBackground extends HookConsumerWidget {
 
     final token = FadeTransition(
         opacity: fadeController,
-        child: Transform.translate(
-          offset: Offset(0, verticalAnimation),
-          child: Transform(
-            transform: Matrix4.rotationY(rotationAnimation),
-            alignment: FractionalOffset.center,
-            child: child,
-          ),
+        child: Transform(
+          transform: Matrix4.rotationY(rotationAnimation),
+          alignment: FractionalOffset.center,
+          child: child,
         ));
 
     return AnimatedBackgroundDesign(

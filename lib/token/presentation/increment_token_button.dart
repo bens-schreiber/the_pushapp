@@ -25,6 +25,8 @@ class IncrementTokenButton extends HookConsumerWidget {
               .eq("token_user_id", client.auth.currentUser!.id)
               .count(CountOption.exact),
           tokenFuture);
+
+      ref.invalidate(groupProviderAsync);
     }
 
     return Column(

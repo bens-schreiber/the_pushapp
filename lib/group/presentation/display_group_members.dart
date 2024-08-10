@@ -9,10 +9,12 @@ class GroupMembers extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupMembers = ref.watch(groupMembersProvider);
-    return ListView(
-      children: [
-        for (final member in groupMembers) _MemberTile(account: member)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          for (final member in groupMembers) _MemberTile(account: member)
+        ],
+      ),
     );
   }
 }

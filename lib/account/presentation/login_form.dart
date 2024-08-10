@@ -76,6 +76,9 @@ class LoginForm extends HookConsumerWidget {
 
     final codeSent = Column(
       children: [
+        Icon(Icons.check_circle,
+            size: 50, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(height: 10),
         Text("Sent! Check your email for a login link.",
             style: Theme.of(context).textTheme.headlineSmall),
         TextButton(

@@ -9,6 +9,7 @@ import "package:the_pushapp/group/presentation/create_group_form.dart";
 import "package:the_pushapp/group/presentation/delete_group_form.dart";
 import "package:the_pushapp/group/presentation/display_group_members.dart";
 import "package:the_pushapp/group/presentation/components/group_code_button.dart";
+import "package:the_pushapp/group/presentation/leave_group_form.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
 import "package:the_pushapp/common.dart";
 import "package:the_pushapp/token/presentation/increment_token_button.dart";
@@ -24,9 +25,7 @@ class ActionsDisplay extends StatelessWidget {
             accountProviderAsync,
             groupProviderAsync
           ],
-          child: const Center(
-            child: _ActionsDisplay(),
-          ),
+          child: const _ActionsDisplay(),
         ),
       );
 }
@@ -56,18 +55,19 @@ class _ActionsDisplay extends ConsumerWidget {
 
         // Groups
         if (group == null && account != null) const CreateGroupForm(),
-        if (group != null) ...[
-          const CopyGroupCodeButton(),
-          const SizedBox(
-            height: 100,
-            child: GroupMembers(),
+        if (group != null)
+          Container(
+            constraints: const BoxConstraints(maxHeight: 100),
+            child: const GroupMembers(),
           ),
-        ],
 
         if (isGroupAdmin) ...[
+          const CopyGroupCodeButton(),
           const DeleteGroupForm(),
           if (!group.isActive) const ActivateGroupForm(),
         ],
+
+        if (group != null && !isGroupAdmin) const LeaveGroupForm(),
 
         // Token
         if (isTokenHolder) const IncrementTokenButton()

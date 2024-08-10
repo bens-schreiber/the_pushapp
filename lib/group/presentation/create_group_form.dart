@@ -31,10 +31,16 @@ class CreateGroupForm extends HookConsumerWidget {
 
     return Column(
       children: [
+        Icon(Icons.group,
+            size: 100, color: Theme.of(context).colorScheme.primary),
         Text("Find your friends!",
-            style: Theme.of(context).textTheme.headlineLarge),
-        Text("Accept an invite or create a group to get started.",
-            style: Theme.of(context).textTheme.bodyLarge),
+            style: Theme.of(context).textTheme.headlineLarge,
+            textAlign: TextAlign.center),
+        Text(
+          "Accept an invite or create a group to get started.",
+          style: Theme.of(context).textTheme.bodyLarge,
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 25),
         HandleButton(
           onPressed: createGroup,

@@ -13,7 +13,7 @@ class InfoDisplay extends ConsumerWidget {
     final group = ref.watch(groupProvider);
     final groupMembers = ref.watch(groupMembersProvider);
     final isLoading = ref.watch(tokenLoadingAnimationStateProvider);
-    if (account == null || group == null || isLoading) {
+    if (account == null || group == null || isLoading || groupMembers.isEmpty) {
       return const Padding(
           padding: EdgeInsets.all(8), child: LinearProgressIndicator());
     }
@@ -23,8 +23,8 @@ class InfoDisplay extends ConsumerWidget {
 
     final accountTitle = "${account.firstName} ${account.lastName}";
     final accountSubtitle = account.id == group.adminUserId
-        ? "Group Admin"
-        : "${admin.firstName} ${admin.lastName}";
+        ? "Group Creator"
+        : "${admin.firstName} ${admin.lastName}'s Group";
 
     final groupTitle =
         "${groupMembers.length} member${groupMembers.length > 1 ? "s" : ""}";
