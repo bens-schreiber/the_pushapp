@@ -4,17 +4,51 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:the_pushapp/token/application/token_provider.dart";
 import "package:the_pushapp/token/presentation/background_design.dart";
 
+class TokenLogo extends StatelessWidget {
+  final int? token;
+  const TokenLogo({super.key, required this.token});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 225.0,
+      height: 225.0,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.white,
+          width: 10,
+        ),
+        shape: BoxShape.circle,
+        color: Theme.of(context).buttonTheme.colorScheme?.primary,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).buttonTheme.colorScheme!.shadow,
+            blurRadius: 10,
+            spreadRadius: 0.05,
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          (token ?? "").toString(),
+          style: const TextStyle(color: Colors.white, fontSize: 100),
+        ),
+      ),
+    );
+  }
+}
+
 class TokenBackground extends HookConsumerWidget {
-  final Widget child;
   final bool isTokenHolder;
   final bool isInGroup;
   final bool isActiveGroup;
+  final int? token;
   const TokenBackground(
       {super.key,
-      required this.child,
       required this.isActiveGroup,
       required this.isInGroup,
-      required this.isTokenHolder});
+      required this.isTokenHolder,
+      required this.token});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +61,7 @@ class TokenBackground extends HookConsumerWidget {
     );
 
     final rotationAnimation =
-        useAnimation(Tween<double>(begin: 0, end: 5 * 3.14).animate(
+        useAnimation(Tween<double>(begin: 0, end: 4 * 3.14).animate(
       CurvedAnimation(parent: rotationController, curve: Curves.decelerate),
     ));
 
@@ -50,17 +84,20 @@ class TokenBackground extends HookConsumerWidget {
       return null;
     }, [isInGroup, isActiveGroup]);
 
-    final token = FadeTransition(
+    final logo = FadeTransition(
         opacity: fadeController,
         child: Transform(
           transform: Matrix4.rotationY(rotationAnimation),
           alignment: FractionalOffset.center,
-          child: child,
+          child: TokenLogo(token: token),
         ));
 
-    return AnimatedBackgroundDesign(
-        animate: isActiveGroup || isTokenHolder,
-        background: isTokenHolder,
-        child: token);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: AnimatedBackgroundDesign(
+          animate: isActiveGroup || isTokenHolder,
+          background: isTokenHolder,
+          child: logo),
+    );
   }
 }

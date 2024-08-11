@@ -8,7 +8,7 @@ import "package:the_pushapp/home/presentation/actions.dart";
 import "package:the_pushapp/home/presentation/components/bminschreib.dart";
 import "package:the_pushapp/home/presentation/components/info_display.dart";
 import "package:the_pushapp/token/application/token_provider.dart";
-import "package:the_pushapp/token/presentation/token.dart";
+import "package:the_pushapp/token/presentation/token_display.dart";
 import "package:the_pushapp/home/presentation/components/sliding_bottom_sheet.dart";
 
 class HomeScreen extends ConsumerWidget {
@@ -25,26 +25,59 @@ class HomeScreen extends ConsumerWidget {
     final isAuth = ref.watch(isAuthenticatedProvider);
     final isTokenHolder = ref.watch(isTokenHolderProvider);
 
-    final logoPlaceholder = Container(
-      width: 225.0,
-      height: 225.0,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).buttonTheme.colorScheme?.primary,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).buttonTheme.colorScheme!.shadow,
-            blurRadius: 10,
-            spreadRadius: 0.05,
-          ),
-        ],
-      ),
+    final sheet = SlidingBottomSheet(
+      finishedLoading: finishedLoading,
+      isInActiveGroup: inActiveGroup,
+      locked: lockSlidingBottomSheet,
+      isTokenHolder: isTokenHolder,
+      minimizedChild: const InfoDisplay(),
+      expandedChild: const ActionsDisplay(),
     );
 
-    final settingsButton = PopupMenuButton(
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        backgroundColor: isTokenHolder
+            ? Theme.of(context).colorScheme.tertiary
+            : Colors.black,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title:
+              const Text("The Push App", style: TextStyle(color: Colors.white)),
+          actions: [
+            if (isAuth) SettingsButton(isAuth: isAuth),
+          ],
+        ),
+        bottomSheet: sheet,
+        body: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: TokenBackground(
+              isInGroup: inGroup,
+              isActiveGroup: inActiveGroup,
+              isTokenHolder: isTokenHolder,
+              token: group?.token),
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsButton extends StatelessWidget {
+  final bool isAuth;
+  const SettingsButton({super.key, required this.isAuth});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
         enabled: isAuth,
         offset: const Offset(0, 50),
-        icon: const Icon(Icons.settings, size: 30),
+        icon: const Icon(
+          Icons.settings,
+          size: 30,
+          color: Colors.white,
+        ),
         itemBuilder: (menuContext) {
           return [
             PopupMenuItem(
@@ -59,38 +92,5 @@ class HomeScreen extends ConsumerWidget {
             })),
           ];
         });
-
-    final sheet = SlidingBottomSheet(
-      finishedLoading: finishedLoading,
-      isInActiveGroup: inActiveGroup,
-      locked: lockSlidingBottomSheet,
-      minimizedChild: const InfoDisplay(),
-      expandedChild: const ActionsDisplay(),
-    );
-
-    return SafeArea(
-      top: false,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: const Text("The Push App"),
-          actions: [
-            if (isAuth) settingsButton,
-          ],
-        ),
-        bottomSheet: sheet,
-        body: SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: TokenBackground(
-            isInGroup: inGroup,
-            isActiveGroup: inActiveGroup,
-            isTokenHolder: isTokenHolder,
-            child: logoPlaceholder,
-          ),
-        ),
-      ),
-    );
   }
 }

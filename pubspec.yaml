@@ -26,6 +26,7 @@ dependencies:
   url_launcher: ^6.3.0
   hooks_riverpod: ^2.5.1
   flutter_hooks: ^0.20.5
+  json_theme: ^6.5.0+1
 
 dev_dependencies:
   flutter_test:

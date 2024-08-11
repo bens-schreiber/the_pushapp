@@ -6,8 +6,8 @@ import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/supabase_provider.dart";
 import "package:the_pushapp/util.dart";
 
-class IncrementTokenButton extends HookConsumerWidget {
-  const IncrementTokenButton({super.key});
+class IncrementTokenDisplay extends HookConsumerWidget {
+  const IncrementTokenDisplay({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,6 +31,14 @@ class IncrementTokenButton extends HookConsumerWidget {
 
     return Column(
       children: [
+        Text("You're the token holder!",
+            style: Theme.of(context).textTheme.headlineLarge,
+            textAlign: TextAlign.center),
+        const SizedBox(height: 10),
+        Text("Drop and give ${ref.read(groupProvider)!.token}!",
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center),
+        const SizedBox(height: 20),
         HandleButton(
           onPressed: () => inErrorHandler(incrementToken, context),
           child: const Text("Increment Token"),

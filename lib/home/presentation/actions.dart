@@ -12,7 +12,7 @@ import "package:the_pushapp/group/presentation/components/group_code_button.dart
 import "package:the_pushapp/group/presentation/leave_group_form.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
 import "package:the_pushapp/common.dart";
-import "package:the_pushapp/token/presentation/increment_token_button.dart";
+import "package:the_pushapp/token/presentation/increment_token_display.dart";
 
 class ActionsDisplay extends StatelessWidget {
   const ActionsDisplay({super.key});
@@ -42,6 +42,10 @@ class _ActionsDisplay extends ConsumerWidget {
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
     final isTokenHolder = group != null && group.tokenUserId == account?.id;
 
+    if (isTokenHolder) {
+      return const IncrementTokenDisplay();
+    }
+
     return Column(
       children: [
         // Login
@@ -68,9 +72,6 @@ class _ActionsDisplay extends ConsumerWidget {
         ],
 
         if (group != null && !isGroupAdmin) const LeaveGroupForm(),
-
-        // Token
-        if (isTokenHolder) const IncrementTokenButton()
       ],
     );
   }

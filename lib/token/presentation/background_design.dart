@@ -16,9 +16,7 @@ class AnimatedBackgroundDesign extends HookWidget {
     final border = !background;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final controller = useAnimationController(
-      duration: const Duration(seconds: 4),
-    );
+    final controller = useAnimationController();
 
     final sizeAnimation = useAnimation(Tween<double>(
       begin: 0,
@@ -33,6 +31,8 @@ class AnimatedBackgroundDesign extends HookWidget {
     p(double percent) => (screenWidth * percent);
 
     useEffect(() {
+      controller.duration = Duration(seconds: background ? 2 : 4);
+
       if (animate) {
         controller.repeat(reverse: true);
       }
@@ -42,32 +42,37 @@ class AnimatedBackgroundDesign extends HookWidget {
       }
 
       return null;
-    }, [animate]);
+    }, [animate, background]);
+
+    final opacity = background ? 0.3 : 1.0;
 
     return Stack(
       alignment: Alignment.center,
       children: [
         CircleDesign(
-            opacity: 1, diameter: p(3), border: border, background: background),
+            opacity: opacity,
+            diameter: p(2) + (sizeAnimation + p(0.4)) * 2,
+            border: border,
+            background: background),
         CircleDesign(
-            opacity: 0.7,
+            opacity: opacity,
             diameter: p(1.6) + sizeAnimation * 1.25,
             border: border,
             background: background),
         CircleDesign(
-            opacity: 0.7,
+            opacity: opacity,
             diameter: p(0.7) + (sizeAnimation + p(0.2)) * 3,
             border: border,
             background: background),
         CircleDesign(
-          opacity: 0.5,
+          opacity: opacity,
           diameter: p(1) + (sizeAnimation) * 1.75,
           border: border,
           background: background,
         ),
         CircleDesign(
-          opacity: 0.9,
-          diameter: p(0.8) + sizeAnimation * 1.5,
+          opacity: opacity,
+          diameter: p(0.8) + (sizeAnimation) * 1.1,
           border: border,
           background: background,
         ),
@@ -101,7 +106,7 @@ class CircleDesign extends StatelessWidget {
           height: diameter,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: background ? Theme.of(context).focusColor : null,
+            color: background ? Theme.of(context).colorScheme.primary : null,
             border: border
                 ? Border.all(color: Theme.of(context).focusColor, width: 3)
                 : null,

@@ -8,6 +8,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
   final bool locked;
   final bool finishedLoading;
   final bool isInActiveGroup;
+  final bool isTokenHolder;
   const SlidingBottomSheet({
     super.key,
     required this.minimizedChild,
@@ -15,6 +16,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
     required this.locked,
     required this.finishedLoading,
     required this.isInActiveGroup,
+    required this.isTokenHolder,
   });
 
   @override
@@ -38,7 +40,7 @@ class SlidingBottomSheet extends HookConsumerWidget {
       }
 
       return null;
-    }, [locked, finishedLoading, isInActiveGroup]);
+    }, [finishedLoading, isInActiveGroup]);
 
     return SizedBox(
       height: 200 + animation,
