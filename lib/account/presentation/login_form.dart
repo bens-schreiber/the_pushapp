@@ -76,11 +76,14 @@ class LoginForm extends HookConsumerWidget {
 
     final codeSent = Column(
       children: [
-        Icon(Icons.check_circle,
-            size: 50, color: Theme.of(context).colorScheme.primary),
+        const Icon(Icons.check_circle, size: 50, color: Colors.green),
         const SizedBox(height: 10),
-        Text("Sent! Check your email for a login link.",
-            style: Theme.of(context).textTheme.headlineSmall),
+        Text(
+          "Sent! Check your email for a login link.",
+          style: Theme.of(context).textTheme.headlineSmall,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 10),
         TextButton(
             onPressed: () {
               sentOtp.value = false;
@@ -96,19 +99,15 @@ class LoginForm extends HookConsumerWidget {
       children: [
         // Header
         if (!sentOtp.value) ...[
-          Text("Welcome to The PushApp",
+          Text("Sign in",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineLarge),
-          Text("Enter your email to begin.",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall),
+              style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 25),
         ],
 
         // Form
         SizedBox(
           width: double.infinity,
-          height: 215,
           child: sentOtp.value ? codeSent : form,
         ),
       ],

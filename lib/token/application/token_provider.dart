@@ -12,4 +12,6 @@ final isTokenHolderProvider = Provider<bool>((ref) {
 });
 
 /// Signals when the token loading animation is occuring.
-final tokenLoadingAnimationStateProvider = StateProvider<bool>((ref) => true);
+/// Synced with the animation duration.
+final tokenLoadingProviderAsync = FutureProvider(
+    (ref) async => await Future.delayed(const Duration(seconds: 2)));

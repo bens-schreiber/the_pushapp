@@ -12,7 +12,8 @@ import "package:the_pushapp/group/presentation/components/group_code_button.dart
 import "package:the_pushapp/group/presentation/leave_group_form.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
 import "package:the_pushapp/common.dart";
-import "package:the_pushapp/token/presentation/increment_token_display.dart";
+import "package:the_pushapp/token/application/token_provider.dart";
+import "package:the_pushapp/token/presentation/increment_token_form.dart";
 
 class ActionsDisplay extends StatelessWidget {
   const ActionsDisplay({super.key});
@@ -21,6 +22,7 @@ class ActionsDisplay extends StatelessWidget {
   Widget build(BuildContext context) => RequireNotifications(
         child: Loader(
           loaders: [
+            tokenLoadingProviderAsync,
             isAuthenticatedProviderAsync,
             accountProviderAsync,
             groupProviderAsync

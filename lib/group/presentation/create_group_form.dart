@@ -31,8 +31,7 @@ class CreateGroupForm extends HookConsumerWidget {
 
     return Column(
       children: [
-        Icon(Icons.group,
-            size: 100, color: Theme.of(context).colorScheme.primary),
+        const Icon(Icons.group, size: 75, color: Colors.white),
         Text("Find your friends!",
             style: Theme.of(context).textTheme.headlineLarge,
             textAlign: TextAlign.center),

@@ -11,7 +11,7 @@ class ActivateGroupForm extends ConsumerWidget {
     activateGroup() async {
       final client = ref.read(clientProvider);
       final group = ref.read(groupProvider);
-      await client.from("Groups").update({"is_active": true}).eq(
+      await client.from("Groups").update({"is_active": true, "token": 1}).eq(
         "id",
         group!.id,
       );

@@ -118,11 +118,30 @@ class Loader extends HookConsumerWidget {
 class HandleButton extends StatelessWidget {
   final Widget child;
   final void Function() onPressed;
-  const HandleButton({super.key, required this.child, required this.onPressed});
+  final bool elevated;
+  const HandleButton(
+      {super.key,
+      required this.child,
+      required this.onPressed,
+      this.elevated = false});
 
   @override
   Widget build(BuildContext context) {
     action() => inErrorHandler(onPressed, context);
+    if (elevated) {
+      return ElevatedButton(
+        style: TextButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+        ),
+        onPressed: action,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: child,
+        ),
+      );
+    }
+
     return TextButton(
       onPressed: action,
       child: child,

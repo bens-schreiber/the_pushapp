@@ -18,15 +18,8 @@ class AnimatedBackgroundDesign extends HookWidget {
 
     final controller = useAnimationController();
 
-    final sizeAnimation = useAnimation(Tween<double>(
-      begin: 0,
-      end: 20,
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.easeInOut,
-      ),
-    ));
+    final sizeAnimation =
+        useAnimation(Tween<double>(begin: 0, end: 20).animate(controller));
 
     p(double percent) => (screenWidth * percent);
 
@@ -44,35 +37,30 @@ class AnimatedBackgroundDesign extends HookWidget {
       return null;
     }, [animate, background]);
 
-    final opacity = background ? 0.3 : 1.0;
+    final opacity = background ? 0.25 : 1.0;
 
     return Stack(
       alignment: Alignment.center,
       children: [
         CircleDesign(
             opacity: opacity,
-            diameter: p(2) + (sizeAnimation + p(0.4)) * 2,
+            diameter: p(1.3) + (sizeAnimation + p(0.4)),
             border: border,
             background: background),
         CircleDesign(
             opacity: opacity,
-            diameter: p(1.6) + sizeAnimation * 1.25,
-            border: border,
-            background: background),
-        CircleDesign(
-            opacity: opacity,
-            diameter: p(0.7) + (sizeAnimation + p(0.2)) * 3,
+            diameter: p(1.3) + sizeAnimation * 1.25,
             border: border,
             background: background),
         CircleDesign(
           opacity: opacity,
-          diameter: p(1) + (sizeAnimation) * 1.75,
+          diameter: p(0.9) + (sizeAnimation) * 1.75,
           border: border,
           background: background,
         ),
         CircleDesign(
           opacity: opacity,
-          diameter: p(0.8) + (sizeAnimation) * 1.1,
+          diameter: p(0.7) + (sizeAnimation) * 1.1,
           border: border,
           background: background,
         ),

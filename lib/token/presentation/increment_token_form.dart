@@ -31,18 +31,22 @@ class IncrementTokenDisplay extends HookConsumerWidget {
 
     return Column(
       children: [
-        Text("You're the token holder!",
-            style: Theme.of(context).textTheme.headlineLarge,
-            textAlign: TextAlign.center),
-        const SizedBox(height: 10),
-        Text("Drop and give ${ref.read(groupProvider)!.token}!",
-            style: Theme.of(context).textTheme.headlineSmall,
+        Image.asset(
+          "assets/logo.png",
+          height: 70,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 15),
+        Text("Drop and give ${ref.read(groupProvider)!.token} push up!",
+            style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center),
         const SizedBox(height: 20),
         HandleButton(
-          onPressed: () => inErrorHandler(incrementToken, context),
-          child: const Text("Increment Token"),
+          elevated: true,
+          onPressed: incrementToken,
+          child: const Text("I've done my push ups"),
         ),
+        const SizedBox(height: 10),
         FutureLoader(loaders: [tokenFuture])
       ],
     );

@@ -6,18 +6,15 @@ import "package:the_pushapp/group/application/group_provider.dart";
 import "package:the_pushapp/home/application/home_provider.dart";
 import "package:the_pushapp/home/presentation/actions.dart";
 import "package:the_pushapp/home/presentation/components/bminschreib.dart";
-import "package:the_pushapp/home/presentation/components/info_display.dart";
 import "package:the_pushapp/token/application/token_provider.dart";
 import "package:the_pushapp/token/presentation/token_display.dart";
-import "package:the_pushapp/home/presentation/components/sliding_bottom_sheet.dart";
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lockSlidingBottomSheet = ref.watch(lockSlidingBottomSheetProvider);
-    final finishedLoading = !ref.watch(tokenLoadingAnimationStateProvider);
+    ref.watch(initializeAppProviderAsync);
     final group = ref.watch(groupProvider);
 
     final inGroup = group != null;
@@ -25,13 +22,17 @@ class HomeScreen extends ConsumerWidget {
     final isAuth = ref.watch(isAuthenticatedProvider);
     final isTokenHolder = ref.watch(isTokenHolderProvider);
 
-    final sheet = SlidingBottomSheet(
-      finishedLoading: finishedLoading,
-      isInActiveGroup: inActiveGroup,
-      locked: lockSlidingBottomSheet,
-      isTokenHolder: isTokenHolder,
-      minimizedChild: const InfoDisplay(),
-      expandedChild: const ActionsDisplay(),
+    const sheet = SizedBox(
+      height: 300,
+      child: Card(
+        elevation: 10,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+              padding: EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 10),
+              child: ActionsDisplay()),
+        ),
+      ),
     );
 
     return SafeArea(
