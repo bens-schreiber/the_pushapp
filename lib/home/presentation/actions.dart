@@ -37,9 +37,9 @@ class _ActionsDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isAuthenticated = ref.watch(isAuthenticatedProvider);
     final account = ref.watch(accountProvider);
     final group = ref.watch(groupProvider);
-    final isAuthenticated = ref.watch(isAuthenticatedProvider);
 
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
     final isTokenHolder = group != null && group.tokenUserId == account?.id;

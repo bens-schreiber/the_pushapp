@@ -12,6 +12,7 @@ class IncrementTokenDisplay extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tokenFuture = useFutureLoader();
+    final token = ref.read(groupProvider)!.token;
 
     incrementToken() async {
       final client = ref.read(clientProvider);
@@ -37,7 +38,7 @@ class IncrementTokenDisplay extends HookConsumerWidget {
           color: Colors.white,
         ),
         const SizedBox(height: 15),
-        Text("Drop and give ${ref.read(groupProvider)!.token} push up!",
+        Text("Drop and give $token push up${token > 1 ? "s" : ""}!",
             style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center),
         const SizedBox(height: 20),

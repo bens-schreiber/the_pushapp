@@ -19,12 +19,12 @@ class AnimatedBackgroundDesign extends HookWidget {
     final controller = useAnimationController();
 
     final sizeAnimation =
-        useAnimation(Tween<double>(begin: 0, end: 20).animate(controller));
+        useAnimation(Tween<double>(begin: 0, end: 50).animate(controller));
 
     p(double percent) => (screenWidth * percent);
 
     useEffect(() {
-      controller.duration = Duration(seconds: background ? 2 : 4);
+      controller.duration = Duration(seconds: background ? 2 : 8);
 
       if (animate) {
         controller.repeat(reverse: true);
@@ -37,7 +37,7 @@ class AnimatedBackgroundDesign extends HookWidget {
       return null;
     }, [animate, background]);
 
-    final opacity = background ? 0.25 : 1.0;
+    final opacity = background ? 0.3 : 1.0;
 
     return Stack(
       alignment: Alignment.center,
@@ -94,7 +94,14 @@ class CircleDesign extends StatelessWidget {
           height: diameter,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: background ? Theme.of(context).colorScheme.primary : null,
+            gradient: background
+                ? LinearGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Colors.deepOrange,
+                    ],
+                  )
+                : null,
             border: border
                 ? Border.all(color: Theme.of(context).focusColor, width: 3)
                 : null,

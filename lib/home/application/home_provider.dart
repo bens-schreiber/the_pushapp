@@ -21,6 +21,7 @@ final initializeAppProviderAsync = FutureProvider<bool>((ref) async {
   await fcm.setAutoInitEnabled(true);
   await fcm.getAPNSToken();
   ref.read(fcmMessageStreamSubscriptionProvider);
+  ref.read(fcmMessageOpenedAppStreamSubscriptionProvider);
 
   return true;
 });

@@ -104,7 +104,7 @@ class TokenBackground extends HookWidget {
         ));
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 150),
       child: AnimatedBackgroundDesign(
           animate: isActiveGroup || isTokenHolder,
           background: isTokenHolder,

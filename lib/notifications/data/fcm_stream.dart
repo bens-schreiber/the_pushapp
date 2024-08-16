@@ -12,3 +12,12 @@ final fcmMessageStreamSubscriptionProvider =
     ref.invalidate(groupProviderAsync);
   });
 });
+
+/// Installs a [StreamSubscription] into memory to listen for incoming FCM messages into memory.
+final fcmMessageOpenedAppStreamSubscriptionProvider =
+    Provider<StreamSubscription>((ref) {
+  return FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    print("message: $message");
+    ref.invalidate(groupProviderAsync);
+  });
+});

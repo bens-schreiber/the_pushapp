@@ -6,7 +6,8 @@ import "package:the_pushapp/notifications/application/notifications_provider.dar
 class RequireNotifications extends ConsumerWidget {
   final Widget child;
   final bool hide;
-  const RequireNotifications({required this.child, this.hide = false, super.key});
+  const RequireNotifications(
+      {required this.child, this.hide = false, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +42,10 @@ class RequireNotifications extends ConsumerWidget {
     return notificationPreferences.when(
       data: (s) {
         final enabled = hasNotificationsEnabled(s);
-        if (!enabled) {
+        final providerInitialized =
+            ref.read(firebaseMessagingProviderAsync).hasValue;
+
+        if (!enabled && providerInitialized) {
           ref
               .read(firebaseMessagingProviderAsync)
               .value!
