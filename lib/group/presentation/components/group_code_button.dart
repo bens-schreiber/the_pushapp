@@ -1,14 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/group/group_provider.dart";
 
 class CopyGroupCodeButton extends ConsumerWidget {
   const CopyGroupCodeButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final group = ref.watch(groupProvider);
+    final group = ref.read(groupProvider);
     final code = "https://bmin-schreib.com/pushapp?invite=${group?.id}";
 
     copyClipboard() async {

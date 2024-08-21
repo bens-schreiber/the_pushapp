@@ -1,14 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/account/domain/account.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/account/freezed/account.dart";
+import "package:the_pushapp/group/group_provider.dart";
 
 class GroupMembers extends ConsumerWidget {
   const GroupMembers({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupMembers = ref.watch(groupMembersProvider);
+    final groupMembers = ref.read(groupMembersProvider);
     return SingleChildScrollView(
       child: Column(
         children: [

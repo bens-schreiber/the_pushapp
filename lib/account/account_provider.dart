@@ -1,7 +1,7 @@
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/account/domain/account.dart";
-import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/account/freezed/account.dart";
+import "package:the_pushapp/supabase/supabase_provider.dart";
 
 /// Whether the user is authenticated to supabase.
 ///

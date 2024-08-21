@@ -1,9 +1,9 @@
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/account/application/account_provider.dart";
-import "package:the_pushapp/account/domain/account.dart";
-import "package:the_pushapp/group/domain/group.dart";
-import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/account/account_provider.dart";
+import "package:the_pushapp/account/freezed/account.dart";
+import "package:the_pushapp/group/freezed/group.dart";
+import "package:the_pushapp/supabase/supabase_provider.dart";
 
 /// The group the user is in.
 ///

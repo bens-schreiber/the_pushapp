@@ -2,7 +2,7 @@ import "dart:async";
 
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/supabase_provider.dart";
+import "package:the_pushapp/supabase/supabase_provider.dart";
 import "package:uni_links/uni_links.dart";
 
 Future<void> handleLink(SupabaseClient client, String? link) async {

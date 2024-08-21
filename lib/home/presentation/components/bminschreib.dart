@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:the_pushapp/util.dart";
+import "package:the_pushapp/common/util.dart";
 import "package:url_launcher/url_launcher.dart";
 
 class HelpButton extends StatelessWidget {

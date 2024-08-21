@@ -1,7 +1,7 @@
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/notifications/application/notifications_provider.dart";
+import "package:the_pushapp/notifications/notifications_provider.dart";
 
 class RequireNotifications extends ConsumerWidget {
   final Widget child;

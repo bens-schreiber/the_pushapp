@@ -2,7 +2,7 @@ import "dart:async";
 
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/group/group_provider.dart";
 
 /// Installs a [StreamSubscription] into memory to listen for incoming FCM messages into memory.
 final fcmMessageStreamSubscriptionProvider =

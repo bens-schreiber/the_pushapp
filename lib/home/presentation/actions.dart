@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:the_pushapp/account/application/account_provider.dart";
+import "package:the_pushapp/account/account_provider.dart";
 import "package:the_pushapp/account/presentation/account_form.dart";
 import "package:the_pushapp/account/presentation/login_form.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
+import "package:the_pushapp/group/group_provider.dart";
 import "package:the_pushapp/group/presentation/activate_group_form.dart";
 import "package:the_pushapp/group/presentation/create_group_form.dart";
 import "package:the_pushapp/group/presentation/delete_group_form.dart";
@@ -11,8 +11,8 @@ import "package:the_pushapp/group/presentation/display_group_members.dart";
 import "package:the_pushapp/group/presentation/components/group_code_button.dart";
 import "package:the_pushapp/group/presentation/leave_group_form.dart";
 import "package:the_pushapp/notifications/presentation/require_notifications.dart";
-import "package:the_pushapp/common.dart";
-import "package:the_pushapp/token/application/token_provider.dart";
+import "package:the_pushapp/common/common.dart";
+import "package:the_pushapp/token/token_provider.dart";
 import "package:the_pushapp/token/presentation/increment_token_form.dart";
 
 class ActionsDisplay extends StatelessWidget {
@@ -25,7 +25,8 @@ class ActionsDisplay extends StatelessWidget {
             tokenLoadingProviderAsync,
             isAuthenticatedProviderAsync,
             accountProviderAsync,
-            groupProviderAsync
+            groupProviderAsync,
+            groupMembersProviderAsync,
           ],
           child: const _ActionsDisplay(),
         ),
@@ -39,10 +40,22 @@ class _ActionsDisplay extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isAuthenticated = ref.watch(isAuthenticatedProvider);
     final account = ref.watch(accountProvider);
+    final isTokenHolder = ref.watch(isTokenHolderProvider);
     final group = ref.watch(groupProvider);
 
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
-    final isTokenHolder = group != null && group.tokenUserId == account?.id;
+
+    if (!isAuthenticated) {
+      return const LoginForm();
+    }
+
+    if (account == null && isAuthenticated) {
+      return const AccountForm();
+    }
+
+    if (group == null) {
+      return const CreateGroupForm();
+    }
 
     if (isTokenHolder) {
       return const IncrementTokenDisplay();
@@ -50,30 +63,16 @@ class _ActionsDisplay extends ConsumerWidget {
 
     return Column(
       children: [
-        // Login
-        if (!isAuthenticated) const LoginForm(),
-
-        // Account
-        if (account == null && isAuthenticated) ...[
-          const AccountForm(),
-          const SizedBox(height: 20),
-        ],
-
-        // Groups
-        if (group == null && account != null) const CreateGroupForm(),
-        if (group != null)
-          Container(
-            constraints: const BoxConstraints(maxHeight: 100),
-            child: const GroupMembers(),
-          ),
-
+        Container(
+          constraints: const BoxConstraints(maxHeight: 100),
+          child: const GroupMembers(),
+        ),
         if (isGroupAdmin) ...[
           const CopyGroupCodeButton(),
           const DeleteGroupForm(),
-          if (!group.isActive) const ActivateGroupForm(),
+          if (group.isActive != true) const ActivateGroupForm(),
         ],
-
-        if (group != null && !isGroupAdmin) const LeaveGroupForm(),
+        if (!isGroupAdmin) const LeaveGroupForm(),
       ],
     );
   }

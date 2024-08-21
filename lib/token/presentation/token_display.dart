@@ -3,7 +3,8 @@ import "dart:math";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:the_pushapp/token/application/token_provider.dart";
+import "package:the_pushapp/group/group_provider.dart";
+import "package:the_pushapp/token/token_provider.dart";
 import "package:the_pushapp/token/presentation/background_design.dart";
 
 class TokenLogo extends ConsumerWidget {
@@ -56,14 +57,34 @@ class TokenLogo extends ConsumerWidget {
   }
 }
 
-class TokenBackground extends HookWidget {
+class TokenBackground extends ConsumerWidget {
+  const TokenBackground({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final group = ref.watch(groupProvider);
+    final isTokenHolder = ref.watch(isTokenHolderProvider);
+
+    final isActiveGroup = group != null && group.isActive;
+    final isInGroup = group != null;
+    final token = group?.token;
+
+    return _TokenBackground(
+      isActiveGroup: isActiveGroup,
+      isInGroup: isInGroup,
+      isTokenHolder: isTokenHolder,
+      token: token,
+    );
+  }
+}
+
+class _TokenBackground extends HookWidget {
   final bool isTokenHolder;
   final bool isInGroup;
   final bool isActiveGroup;
   final int? token;
-  const TokenBackground(
-      {super.key,
-      required this.isActiveGroup,
+  const _TokenBackground(
+      {required this.isActiveGroup,
       required this.isInGroup,
       required this.isTokenHolder,
       required this.token});

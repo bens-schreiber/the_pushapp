@@ -3,7 +3,7 @@ import "dart:async";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
-import "package:the_pushapp/notifications/application/notifications_provider.dart";
+import "package:the_pushapp/notifications/notifications_provider.dart";
 
 // ignore: unused_element
 late StreamSubscription _authSubscription;

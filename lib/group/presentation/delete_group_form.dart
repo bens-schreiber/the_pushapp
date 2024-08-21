@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:the_pushapp/common.dart";
-import "package:the_pushapp/group/application/group_provider.dart";
-import "package:the_pushapp/supabase_provider.dart";
-import "package:the_pushapp/util.dart";
+import "package:the_pushapp/common/common.dart";
+import "package:the_pushapp/group/group_provider.dart";
+import "package:the_pushapp/supabase/supabase_provider.dart";
+import "package:the_pushapp/common/util.dart";
 
 class DeleteGroupForm extends HookConsumerWidget {
   const DeleteGroupForm({super.key});

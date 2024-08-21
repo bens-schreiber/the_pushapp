@@ -1,32 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:the_pushapp/util.dart";
-
-/// Displays the value of an [AsyncValue] provider in a widget
-///
-/// If [child] is not provided, the value will be displayed in a [Text] widget
-///
-/// If the [AsyncValue] has an error, the error will be displayed in a [Text] widget
-class AsyncValueDisplay extends ConsumerWidget {
-  final ProviderBase<AsyncValue<Object?>> data;
-  final Widget? child;
-  const AsyncValueDisplay({required this.data, this.child, super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValue = ref.watch(data);
-    if (asyncValue.hasError) {
-      return Text("Error: ${asyncValue.error}");
-    }
-
-    if (asyncValue.isLoading && !asyncValue.hasValue) {
-      return const SizedBox.shrink();
-    }
-
-    return child ?? Text(asyncValue.value?.toString() ?? "null");
-  }
-}
+import "package:the_pushapp/common/util.dart";
 
 /// Shows a loading widget while the loaders are loading
 /// Once all loaders are done loading, [SizedBox.shrink()] is displayed
