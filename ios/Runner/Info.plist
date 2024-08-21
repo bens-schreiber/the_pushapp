@@ -66,5 +66,9 @@
     <false/>
     <key>FirebaseScreenReportingEnabled</key>
     <true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Sending photos to your push up group</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>your usage description here</string>
 </dict>
 </plist>

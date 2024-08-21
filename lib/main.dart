@@ -12,7 +12,7 @@ import "package:the_pushapp/notifications/notifications_provider.dart";
 import "package:the_pushapp/supabase/supabase_provider.dart";
 import "package:the_pushapp/supabase/user_channel.dart";
 import "package:the_pushapp/supabase/group_channel.dart";
-import "package:the_pushapp/group/invitation.dart";
+import "package:the_pushapp/group/deep_link.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

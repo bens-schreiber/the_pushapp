@@ -1,3 +1,5 @@
+import "dart:io";
+
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
@@ -5,6 +7,7 @@ import "package:the_pushapp/common/common.dart";
 import "package:the_pushapp/group/group_provider.dart";
 import "package:the_pushapp/supabase/supabase_provider.dart";
 import "package:the_pushapp/common/util.dart";
+import "package:the_pushapp/token/presentation/components/camera_dialog.dart";
 
 class IncrementTokenDisplay extends HookConsumerWidget {
   const IncrementTokenDisplay({super.key});
@@ -15,7 +18,21 @@ class IncrementTokenDisplay extends HookConsumerWidget {
     final token = ref.read(groupProvider)!.token;
 
     incrementToken() async {
+      final path = await showDialog(
+          barrierDismissible: false,
+          useSafeArea: false,
+          barrierColor: Colors.transparent,
+          context: context,
+          builder: (context) {
+            return const CameraDialog();
+          });
+
       final client = ref.read(clientProvider);
+
+      await client.storage.from("Group Media").upload(
+          "${client.auth.currentUser!.id}/${DateTime.now()}", File(path!),
+          fileOptions: const FileOptions());
+
       final group = ref.read(groupProvider);
       final token = group!.token;
 
@@ -30,13 +47,15 @@ class IncrementTokenDisplay extends HookConsumerWidget {
       ref.invalidate(groupProviderAsync);
     }
 
+    final logo = Image.asset(
+      "assets/logo.png",
+      height: 70,
+      color: Colors.white,
+    );
+
     return Column(
       children: [
-        Image.asset(
-          "assets/logo.png",
-          height: 70,
-          color: Colors.white,
-        ),
+        logo,
         const SizedBox(height: 15),
         Text("Drop and give $token push up${token > 1 ? "s" : ""}!",
             style: Theme.of(context).textTheme.headlineMedium,
