@@ -54,3 +54,33 @@ final groupMembersProviderAsync = FutureProvider<List<Account>>((ref) async {
 final groupMembersProvider = Provider<List<Account>>((ref) {
   return ref.watch(groupMembersProviderAsync).value ?? [];
 });
+
+final groupPhotosProviderAsync =
+    FutureProvider.autoDispose<List<String>>((ref) async {
+  final members = ref.watch(groupMembersProvider);
+  if (members == []) return [];
+
+  final client = ref.read(clientProvider);
+
+  // TODO: certainly must be a better way to do this
+  List<String> urls = [];
+  for (var m in members) {
+    final media = await client.storage
+        .from("Group Media")
+        .list(path: "${m.id}/${m.groupId}");
+
+    if (media.isEmpty) continue;
+    media.removeWhere((e) => e.name == ".emptyFolderPlaceholder");
+
+    final last = media.reduce((a, b) =>
+        DateTime.parse(a.name).compareTo(DateTime.parse(b.name)) > 1 ? a : b);
+
+    final url = client.storage
+        .from("Group Media")
+        .getPublicUrl("${m.id}/${m.groupId}/${last.name}");
+
+    urls.add(url);
+  }
+
+  return urls;
+});

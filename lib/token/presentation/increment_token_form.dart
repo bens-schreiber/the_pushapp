@@ -28,18 +28,17 @@ class IncrementTokenDisplay extends HookConsumerWidget {
           });
 
       final client = ref.read(clientProvider);
+      final group = ref.read(groupProvider)!;
 
       await client.storage.from("Group Media").upload(
-          "${client.auth.currentUser!.id}/${DateTime.now()}", File(path!),
+          "${client.auth.currentUser!.id}/${group.id}/${DateTime.now()}",
+          File(path!),
           fileOptions: const FileOptions());
-
-      final group = ref.read(groupProvider);
-      final token = group!.token;
 
       await FutureLoader.load(
           client
               .from("Groups")
-              .update({"token": token + 1, "token_user_id": null})
+              .update({"token": group.token + 1, "token_user_id": null})
               .eq("token_user_id", client.auth.currentUser!.id)
               .count(CountOption.exact),
           tokenFuture);

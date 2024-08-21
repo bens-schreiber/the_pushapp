@@ -8,7 +8,7 @@ class GroupMembers extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupMembers = ref.read(groupMembersProvider);
+    final groupMembers = ref.watch(groupMembersProvider);
     return SingleChildScrollView(
       child: Column(
         children: [
