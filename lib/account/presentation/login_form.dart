@@ -60,7 +60,7 @@ class LoginForm extends HookConsumerWidget {
           HandleButton(
             onPressed: login,
             child: Text(
-              "Login",
+              "Sign in",
               style: TextStyle(
                   fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize),
             ),

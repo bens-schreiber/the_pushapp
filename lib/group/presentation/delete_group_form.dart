@@ -12,7 +12,15 @@ class DeleteGroupForm extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final groupFuture = useFutureLoader();
 
+    confirm() => showConfirmationDialog(
+          title: "Delete Group",
+          content:
+              "Are you sure you want to delete this group? All members will be removed.",
+          context: context,
+        );
+
     delete() async {
+      if (!await confirm()) return;
       final client = ref.read(clientProvider);
       final group = ref.read(groupProvider);
 

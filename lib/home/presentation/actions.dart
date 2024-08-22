@@ -1,8 +1,9 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:the_pushapp/account/account_provider.dart";
 import "package:the_pushapp/account/presentation/account_form.dart";
 import "package:the_pushapp/account/presentation/login_form.dart";
+import "package:the_pushapp/common/util.dart";
 import "package:the_pushapp/group/group_provider.dart";
 import "package:the_pushapp/group/presentation/activate_group_form.dart";
 import "package:the_pushapp/group/presentation/create_group_form.dart";
@@ -33,7 +34,7 @@ class ActionsDisplay extends StatelessWidget {
       );
 }
 
-class _ActionsDisplay extends ConsumerWidget {
+class _ActionsDisplay extends HookConsumerWidget {
   const _ActionsDisplay();
 
   @override
@@ -44,6 +45,18 @@ class _ActionsDisplay extends ConsumerWidget {
     final group = ref.watch(groupProvider);
 
     final isGroupAdmin = group != null && group.adminUserId == account?.id;
+
+    useOneTimeDialog(
+      title: "Welcome to The PushApp",
+      content:
+          """PushApp is a simple game where a random user is prompted to do an incrementing amounts of pushups. 
+                \n\nTo play, create a group or join one via an invitation code.
+                \n\nThis app is currently in alpha testing. Report any bugs you find via the help button.
+                """,
+      context: context,
+      condition: () => account != null,
+      keys: [account],
+    );
 
     if (!isAuthenticated) {
       return const LoginForm();
@@ -69,8 +82,10 @@ class _ActionsDisplay extends ConsumerWidget {
         ),
         if (isGroupAdmin) ...[
           const CopyGroupCodeButton(),
-          const DeleteGroupForm(),
+          const SizedBox(height: 20),
           if (group.isActive != true) const ActivateGroupForm(),
+          const SizedBox(height: 20),
+          const DeleteGroupForm(),
         ],
         if (!isGroupAdmin) const LeaveGroupForm(),
       ],

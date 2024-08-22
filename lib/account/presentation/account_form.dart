@@ -46,10 +46,11 @@ class AccountForm extends HookConsumerWidget {
         key: formKey,
         child: Column(
           children: [
-            Text("Let's get to know you!",
-                style: Theme.of(context).textTheme.headlineLarge),
-            Text("Enter your name below to create an account.",
-                style: Theme.of(context).textTheme.bodyLarge),
+            Text(
+              "Let's get to know you!",
+              style: Theme.of(context).textTheme.headlineLarge,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 25),
             TextFormField(
               decoration: const InputDecoration(labelText: "First name"),
